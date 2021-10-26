@@ -1,7 +1,5 @@
 ﻿using MongoDB.Bson;
 using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace TP214E.Data
 {
@@ -12,6 +10,5 @@ namespace TP214E.Data
         public int Quantite { get; set; }
         public string Unite { get; set; }
         public DateTime ExpireLe { get; set; }
-
     }
 }
