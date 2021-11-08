@@ -3,12 +3,16 @@ using System;
 
 namespace TP214E.Data
 {
-    public class Aliment
+    public class Aliment : Produit
     {
-        public ObjectId Id { get; set; }
-        public string Nom { get; set; }
+        public Aliment(string nom, int quantite, bool congele, DateTime expireLe) : base(nom)
+        {
+            Quantite = quantite;
+            Congele = congele;
+            ExpireLe = expireLe;
+        }
         public int Quantite { get; set; }
-        public string Unite { get; set; }
+        public bool Congele { get; set; }
         public DateTime ExpireLe { get; set; }
     }
 }
