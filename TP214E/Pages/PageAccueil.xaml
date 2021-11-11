@@ -29,7 +29,7 @@
         </Border>
 
         <StackPanel Grid.Row="1" Grid.Column="1" VerticalAlignment="Center">
-            <Button Content="Consulter l'inventaire" Grid.Column="0" Grid.Row="0" HorizontalAlignment="Center" Background="#CC5F8C5A" BorderBrush="White" Foreground="White" BorderThickness="2,2,2,2" Padding="10,5" FontSize="24" Width="320" Click="BoutonInventaire_Click" FontWeight="Bold" FontFamily="Rockwell" Margin="0,0,0,60">
+            <Button Content="Consulter l'inventaire" HorizontalAlignment="Center" Background="#CC5F8C5A" BorderBrush="White" Foreground="White" BorderThickness="2,2,2,2" Padding="10,5" FontSize="24" Width="320" Click="BoutonInventaire_Click" FontWeight="Bold" FontFamily="Rockwell" Margin="0,0,0,60">
                 <Button.Resources>
                     <Style TargetType="Border">
                         <Setter Property="CornerRadius" Value="5" />

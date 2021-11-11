@@ -14,7 +14,7 @@ namespace TP214E.Data
             mongoDBClient = OuvrirConnexion();
         }
 
-        public List<Aliment> ALiments()
+        public List<Aliment> Aliments()
         {
             List<Aliment> aliments = new List<Aliment>();
             try
@@ -29,6 +29,36 @@ namespace TP214E.Data
             }
 
             return aliments;
+        }
+
+        public void AjouterAliment(Aliment aliment)
+        {
+            try
+            {
+                IMongoDatabase db = mongoDBClient.GetDatabase("TP2DB");
+                IMongoCollection<Aliment> aliments = db.GetCollection<Aliment>("Aliments");
+                aliments.InsertOne(aliment);
+            }
+            catch (Exception exception)
+            {
+                Console.WriteLine(exception);
+                throw;
+            }
+        }
+
+        public void RetirerAliment(Aliment aliment)
+        {
+            try
+            {
+                IMongoDatabase db = mongoDBClient.GetDatabase("TP2DB");
+                IMongoCollection<Aliment> aliments = db.GetCollection<Aliment>("Aliments");
+                aliments.FindOneAndDelete(Builders<Aliment>.Filter.Eq("_id", aliment.Id));
+            }
+            catch (Exception exception)
+            {
+                Console.WriteLine(exception);
+                throw;
+            }
         }
 
         private MongoClient OuvrirConnexion()
@@ -46,5 +76,7 @@ namespace TP214E.Data
 
             return dbClient;
         }
+
+        
     }
 }

@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Windows;
 using System.Windows.Controls;
 using TP214E.Data;
 
@@ -9,12 +11,41 @@ namespace TP214E
     /// </summary>
     public partial class PageInventaire : Page
     {
-        private List<Aliment> aliments;
+        private DAL dal;
 
         public PageInventaire(DAL dal)
         {
             InitializeComponent();
-            aliments = dal.ALiments();
+            this.dal = dal;
+            RafraichirInventaire();
+
+        }
+
+
+        private void BtnRetour_OnClick(object sender, RoutedEventArgs e)
+        {
+            if (NavigationService != null && NavigationService.CanGoBack)
+            {
+                NavigationService.GoBack();
+            }
+        }
+
+        private void BtnSupprimer_OnClick(object sender, RoutedEventArgs e)
+        {
+            Button button = (Button) sender;
+
+            if (button.DataContext is Aliment)
+            {
+                Aliment alimentSelectionne = (Aliment)button.DataContext;
+                dal.RetirerAliment(alimentSelectionne);
+                RafraichirInventaire();
+            }
+        }
+
+
+        private void RafraichirInventaire()
+        {
+            lstBoxAliments.ItemsSource = dal.Aliments();
         }
     }
 }

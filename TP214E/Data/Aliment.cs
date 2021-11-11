@@ -14,5 +14,7 @@ namespace TP214E.Data
         public int Quantite { get; set; }
         public bool Congele { get; set; }
         public DateTime ExpireLe { get; set; }
+
+        public string CongeleAsString => Congele ? "Congelé" : "Non-Congelé";
     }
 }
