@@ -1,0 +1,122 @@
+﻿<Window x:Class="TP214E.Formulaires.FormulaireAjoutModifAliment"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:TP214E.Formulaires"
+        mc:Ignorable="d"
+        Title="FormulaireAjoutModifAliment" Height="450" Width="800">
+    <Grid ShowGridLines="True" Background="Black">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="100" />
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="100" />
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="0.2*" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="0.2*" />
+        </Grid.RowDefinitions>
+        <Image Grid.Row="0" Grid.Column="0" Source="/Ressources/Images/victorLogo1.png" />
+        <Label Grid.Row="0" Grid.Column="1" Content="Ajout/Modification Aliment" Foreground="#FF5F8C5A" HorizontalAlignment="Center" VerticalAlignment="Center" FontFamily="Rockwell" FontSize="36" FontWeight="Normal" />
+
+        <Border MaxWidth="1200" BorderThickness="2" BorderBrush="White" CornerRadius="8" Grid.Row="1" Grid.Column="1" Margin="50,0,50,0">
+            <Border.Background>
+                <ImageBrush ImageSource="/Ressources/Images/burger.jpg" Stretch="Fill" Opacity="0.5" />
+            </Border.Background>
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"></ColumnDefinition>
+                    <ColumnDefinition Width="*"></ColumnDefinition>
+                    <ColumnDefinition Width="*"></ColumnDefinition>
+                    <ColumnDefinition Width="*"></ColumnDefinition>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*"></RowDefinition>
+                    <RowDefinition Height="*"></RowDefinition>
+                    <RowDefinition Height="*"></RowDefinition>
+                    <RowDefinition Height="*"></RowDefinition>
+                </Grid.RowDefinitions>
+                <Label Content="Nom" Grid.Column="0" Grid.Row="1" Margin="20,0,0,0" Foreground="White"></Label>
+                <StackPanel Grid.Column="1" Grid.Row="1">
+                    <TextBox x:Name="txtNom" Text="" Margin="0,5,30,0"></TextBox>
+                </StackPanel>
+
+                <Label Content="Quantité" Grid.Column="2" Grid.Row="1" Margin="20,0,0,0" Foreground="White"></Label>
+                <StackPanel Grid.Column="3" Grid.Row="1">
+                    <TextBox x:Name="txtQuantite" Text="" Margin="0,0,30,0"></TextBox>
+                </StackPanel>
+
+                <Label Content="Congelé?" Grid.Column="0" Grid.Row="2" Margin="20,0,0,0" Foreground="White"></Label>
+                <StackPanel Grid.Column="1" Grid.Row="2" Orientation="Horizontal">
+                    <RadioButton x:Name="rbCongele" GroupName="estCongele" Content="Oui" Foreground="White"></RadioButton>
+                    <RadioButton x:Name="rbNonCongele" GroupName="estCongele" Content="Non" Foreground="White" Margin="15,0,0,0"></RadioButton>
+                </StackPanel>
+
+                <Label Content="Date d'expiration" Grid.Column="2" Grid.Row="2" Margin="20,0,0,0" Foreground="White"></Label>
+                <StackPanel  Grid.Column="3" Grid.Row="2">
+                    <DatePicker x:Name="dpDateExpiration" Margin="-1.5,0,0,0"></DatePicker>
+                </StackPanel>
+                <Button Grid.Column="2" Grid.Row="3" Width="100" Height="30" x:Name="btnAnnuler" Click="BtnAnnuler_OnClick" Content="Annuler" HorizontalAlignment="Center" Background="#FFC32E2E" VerticalAlignment="Center">
+                    <Button.Resources>
+                        <Style TargetType="Border">
+                            <Setter Property="CornerRadius" Value="5"></Setter>
+                        </Style>
+                        <Style TargetType="{x:Type Button}">
+                            <Setter Property="Template">
+                                <Setter.Value>
+                                    <ControlTemplate TargetType="{x:Type Button}">
+                                        <Border x:Name="Border" Background="{TemplateBinding Background}">
+                                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
+                                        </Border>
+                                        <ControlTemplate.Triggers>
+                                            <Trigger Property="IsMouseOver" Value="True">
+                                                <Setter Property="Background" Value="DarkRed" TargetName="Border" />
+                                            </Trigger>
+                                        </ControlTemplate.Triggers>
+                                    </ControlTemplate>
+                                </Setter.Value>
+                            </Setter>
+                        </Style>
+                    </Button.Resources>
+                    <Button.Effect>
+                        <DropShadowEffect Color="Black" Direction="320" ShadowDepth="3" BlurRadius="5" Opacity="0.5"></DropShadowEffect>
+                    </Button.Effect>
+                </Button>
+                <Button Grid.Column="3" Grid.Row="3" Width="100" Height="30" x:Name="btnSauvegarder" Click="btnSauvegarder_Click" Content="Sauvegarder" HorizontalAlignment="Center" VerticalAlignment="Center" Background="#FF3FAA2E">
+                    <Button.Resources>
+                        <Style TargetType="Border">
+                            <Setter Property="CornerRadius" Value="5"></Setter>
+                        </Style>
+                        <Style TargetType="{x:Type Button}">
+                            <Setter Property="Template">
+                                <Setter.Value>
+                                    <ControlTemplate TargetType="{x:Type Button}">
+                                        <Border x:Name="Border" Background="{TemplateBinding Background}">
+                                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
+                                        </Border>
+                                        <ControlTemplate.Triggers>
+                                            <Trigger Property="IsMouseOver" Value="True">
+                                                <Setter Property="Background" Value="DarkGreen" TargetName="Border" />
+                                            </Trigger>
+                                        </ControlTemplate.Triggers>
+                                    </ControlTemplate>
+                                </Setter.Value>
+                            </Setter>
+                        </Style>
+                    </Button.Resources>
+                    <Button.Effect>
+                        <DropShadowEffect Color="Black" Direction="320" ShadowDepth="3" BlurRadius="5" Opacity="0.5"></DropShadowEffect>
+                    </Button.Effect>
+                </Button>
+            </Grid>
+        </Border>
+        
+        <StackPanel Grid.Row="1" Grid.Column="1" VerticalAlignment="Center">
+
+        </StackPanel>
+
+        <Label Grid.Row="2" Grid.Column="1" Content="Conception et &#10;qualité logicielle" Foreground="#FFF" HorizontalAlignment="Right" VerticalAlignment="Center" FontFamily="Rockwell" FontSize="12" FontWeight="Bold" Margin="0,0,10,0" />
+        <Label Grid.Row="2" Grid.Column="2" Content="TP2" Foreground="#FFF" HorizontalAlignment="Center" VerticalAlignment="Center" FontFamily="Rockwell" FontSize="12" FontWeight="Bold" />
+    </Grid>
+</Window>

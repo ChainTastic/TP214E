@@ -1,7 +1,6 @@
-﻿using System.Windows;
-using System.Windows.Controls;
+﻿using System.Windows.Controls;
 
-namespace TP214E.Pages
+namespace TP214E
 {
     /// <summary>
     /// Logique d'interaction pour PageCommandes.xaml

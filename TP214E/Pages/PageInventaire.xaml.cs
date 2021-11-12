@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Controls;
 using TP214E.Data;
+using TP214E.Formulaires;
 
 namespace TP214E
 {
@@ -33,19 +34,39 @@ namespace TP214E
         private void BtnSupprimer_OnClick(object sender, RoutedEventArgs e)
         {
             Button button = (Button) sender;
-
-            if (button.DataContext is Aliment)
+            Aliment alimentSelectionne = button.DataContext as Aliment;
+            
+            if (alimentSelectionne != null)
             {
-                Aliment alimentSelectionne = (Aliment)button.DataContext;
                 dal.RetirerAliment(alimentSelectionne);
                 RafraichirInventaire();
             }
         }
+
+        private void btnModifer_Click(object sender, RoutedEventArgs e)
+        {
+            Button button = (Button)sender;
+            Aliment alimentSelectionne = button.DataContext as Aliment;
+
+            if (alimentSelectionne != null)
+            {
+                FormulaireAjoutModifAliment formAjoutModifAliment = new FormulaireAjoutModifAliment(alimentSelectionne);
+                if (formAjoutModifAliment.ShowDialog() == true)
+                {
+                    dal.ModifierAliment(alimentSelectionne.Id, formAjoutModifAliment.Aliment);
+                    RafraichirInventaire();
+                }
+            }
+        }
+
+        //TODO Bouton AjouterAliment
 
 
         private void RafraichirInventaire()
         {
             lstBoxAliments.ItemsSource = dal.Aliments();
         }
+
+       
     }
 }

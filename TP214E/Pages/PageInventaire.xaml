@@ -8,7 +8,7 @@
       d:DesignHeight="450" d:DesignWidth="800"
       Title="Inventaire">
 
-    <Grid ShowGridLines="True" Background="Black">
+    <Grid ShowGridLines="False" Background="Black">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="100"/>
             <ColumnDefinition Width="*"/>
@@ -27,33 +27,54 @@
         <ListBox Grid.Row="1" Grid.Column="1" Name="lstBoxAliments">
             <ListBox.ItemTemplate>
                 <DataTemplate>
-                    <Grid ShowGridLines="True">
+                    <Grid ShowGridLines="False">
+                        
                         <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="100"></ColumnDefinition>
+                            <ColumnDefinition Width="80"></ColumnDefinition>
+                            <ColumnDefinition Width="Auto"></ColumnDefinition>
                             <ColumnDefinition Width="Auto"></ColumnDefinition>
                             <ColumnDefinition Width="Auto"></ColumnDefinition>
                         </Grid.ColumnDefinitions>
-                        <TextBlock Grid.Column="0" Text="{Binding Nom}" FontSize="20" VerticalAlignment="Center" FontFamily="Rockwell" Margin="20,0"></TextBlock>
-                            <StackPanel Grid.Column="1" Orientation="Vertical" VerticalAlignment="Center" Margin="20,0">
-                                <Label HorizontalAlignment="Center" FontFamily="Rockwell" Content="Date expiration :"></Label>
-                                <TextBlock HorizontalAlignment="Center" Text="{Binding ExpireLe}" FontFamily="Rockwell"></TextBlock>
-                                <Button x:Name="btnSupprimer" Click="BtnSupprimer_OnClick"  Content="Supprimer" HorizontalAlignment="Center" FontFamily="Rockwell" Margin="0,10,0,0" Background="#FFC32E2E" Padding="10,5">
-                                    <Button.Resources><Style TargetType="Border"><Setter Property="CornerRadius" Value="5"></Setter></Style></Button.Resources>
-                                    <Button.Effect><DropShadowEffect Color="Black" Direction="320" ShadowDepth="3" BlurRadius="5" Opacity="0.5"></DropShadowEffect></Button.Effect>
-                                </Button>
-                            </StackPanel>
-                            <StackPanel Grid.Column="2" Orientation="Vertical" Margin="25, 0" VerticalAlignment="Center">
-                                <StackPanel Orientation="Horizontal">
-                                    <Label Content="Quantité: " FontFamily="Rockwell"></Label>
-                                    <Label Content="{Binding Quantite}" FontFamily="Rockwell"></Label>
-                                </StackPanel>
-                                <StackPanel Orientation="Horizontal">
-                                    <Label Content="État congélation: " FontFamily="Rockwell"></Label>
-                                    <Label Content="{Binding CongeleAsString}" FontFamily="Rockwell"></Label>
-                                </StackPanel>
-                            </StackPanel>
-                    </Grid>
 
+                        <TextBlock Grid.Column="0" Text="{Binding Nom}" FontSize="16" FontWeight="Bold" HorizontalAlignment="Center" VerticalAlignment="Center" FontFamily="Rockwell" Margin="10,0" TextWrapping="Wrap"></TextBlock>
+                        <StackPanel Grid.Column="1" Orientation="Vertical" VerticalAlignment="Center" Margin="10,0">
+                            <Label HorizontalAlignment="Center" FontFamily="Rockwell" Content="Date expiration :"></Label>
+                            <TextBlock HorizontalAlignment="Center" Text="{Binding ExpireLe}" FontFamily="Rockwell"></TextBlock>
+                            
+                        </StackPanel>
+                        <StackPanel Grid.Column="2" Orientation="Vertical" Margin="10, 0" VerticalAlignment="Center" HorizontalAlignment="Center">
+                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                                <Label Content="Quantité: " FontFamily="Rockwell"></Label>
+                                <Label Content="{Binding Quantite}" FontFamily="Rockwell"></Label>
+                            </StackPanel>
+                            <StackPanel Orientation="Horizontal" >
+                                <Label Content="État congélation: " FontFamily="Rockwell"></Label>
+                                <Label Content="{Binding CongeleAsString}" FontFamily="Rockwell"></Label>
+                            </StackPanel>
+                        </StackPanel>
+                        <StackPanel Grid.Column="3" Orientation="Vertical" Margin="5,10" VerticalAlignment="Center" HorizontalAlignment="Center">
+                            <Button x:Name="btnModifer"   Content="Modifier" HorizontalAlignment="Center" FontFamily="Rockwell" Margin="0,5" Background="#FFB6BD1F" Padding="10,5" Click="btnModifer_Click">
+                                <Button.Resources>
+                                    <Style TargetType="Border">
+                                        <Setter Property="CornerRadius" Value="5"></Setter>
+                                    </Style>
+                                </Button.Resources>
+                                <Button.Effect>
+                                    <DropShadowEffect Color="Black" Direction="320" ShadowDepth="3" BlurRadius="5" Opacity="0.5"></DropShadowEffect>
+                                </Button.Effect>
+                            </Button>
+                            <Button x:Name="btnSupprimer" Click="BtnSupprimer_OnClick"  Content="Supprimer" HorizontalAlignment="Center" FontFamily="Rockwell" Margin="0,5" Background="#FFC32E2E" Padding="10,5">
+                                <Button.Resources>
+                                    <Style TargetType="Border">
+                                        <Setter Property="CornerRadius" Value="5"></Setter>
+                                    </Style>
+                                </Button.Resources>
+                                <Button.Effect>
+                                    <DropShadowEffect Color="Black" Direction="320" ShadowDepth="3" BlurRadius="5" Opacity="0.5"></DropShadowEffect>
+                                </Button.Effect>
+                            </Button>
+                        </StackPanel>
+                    </Grid>
                 </DataTemplate>
             </ListBox.ItemTemplate>
         </ListBox>
