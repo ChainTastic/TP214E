@@ -1,31 +1,75 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Windows.Shell;
+using System.Xml.Schema;
 using MongoDB.Bson;
 using TP214E.Interface;
 
 namespace TP214E.Data
 {
-    class Commande : Produit, IDisponible
+    public class Commande
     {
-        public Commande(string nom, List<Plat> lstPlats) : base(nom)
+        private const double TauxTPS = 5;
+        private const double TauxTVQ = 9.975;
+
+        public Commande()
         {
-            LstPlats = lstPlats;
+            Id = ObjectId.GenerateNewId();
+            Date = DateTime.Now;
+            PlatsCommandes = new List<PlatCommande>();
         }
 
-        public List<Plat> LstPlats { get; set; }
+        public double Total { get; set; }
 
-        public bool VerifierDisponibilite()
+        public double TVQ { get; set; }
+
+        public double TPS { get; set; }
+
+        public double SousTotal { get; set; }
+
+        public DateTime Date { get; set; }
+
+        public ObjectId Id { get; set; }
+
+        public string TotalFormatte => $"{Total:C}";
+
+        public List<PlatCommande> PlatsCommandes { get; set; }
+
+        public void RetirerPlat(PlatCommande platCommande)
         {
-            foreach (Plat plat in LstPlats)
+            PlatsCommandes.Remove(platCommande);
+        }
+
+        public void AjouterPlat(PlatCommande platCommande)
+        {
+            PlatsCommandes.Add(platCommande);
+        }
+
+        public double CalculerSousTotal()
+        {
+            double sousTotal = 0;
+            foreach (PlatCommande platCommande in PlatsCommandes)
             {
-                if (!plat.VerifierDisponibilite())
-                {
-                    return false;
-                }
+                sousTotal += platCommande.SousTotal;
             }
-            return true;
+
+            return sousTotal;
         }
 
+        public double CalculerTVQ()
+        {
+            return SousTotal * (TauxTVQ / 100);
+        }
+
+        public double CalculerTPS()
+        {
+            return SousTotal * (TauxTPS / 100);
+        }
+
+        public double CalculerTotal()
+        {
+            return SousTotal + TPS + TVQ;
+        }
     }
 }

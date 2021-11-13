@@ -1,4 +1,4 @@
-﻿<Page x:Class="TP214E.PageAccueil"
+﻿<Page x:Class="TP214E.PageMenuCommande"
       xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
@@ -6,7 +6,7 @@
       xmlns:local="clr-namespace:TP214E"
       mc:Ignorable="d"
       d:DesignHeight="450" d:DesignWidth="800"
-      Title="Accueil">
+      Title="Menu commande">
 
     <Grid ShowGridLines="True" Background="Black">
         <Grid.ColumnDefinitions>
@@ -20,7 +20,7 @@
             <RowDefinition Height="0.2*" />
         </Grid.RowDefinitions>
         <Image Grid.Row="0" Grid.Column="0" Source="/Ressources/Images/victorLogo1.png" />
-        <Label Grid.Row="0" Grid.Column="1" Content="Gestion de FoodTruck Chez Victor" Foreground="#FF5F8C5A" HorizontalAlignment="Center" VerticalAlignment="Center" FontFamily="Rockwell" FontSize="36" FontWeight="Normal" />
+        <Label Grid.Row="0" Grid.Column="1" Content="Gestion des Commandes" Foreground="#FF5F8C5A" HorizontalAlignment="Center" VerticalAlignment="Center" FontFamily="Rockwell" FontSize="36" FontWeight="Normal" />
 
         <Border MaxWidth="1200" BorderThickness="2" BorderBrush="White" CornerRadius="8" Grid.Row="1" Grid.Column="1" Margin="100,0,100,0">
             <Border.Background>
@@ -29,7 +29,7 @@
         </Border>
 
         <StackPanel Grid.Row="1" Grid.Column="1" VerticalAlignment="Center">
-            <Button Content="Consulter l'inventaire" HorizontalAlignment="Center" Background="#CC5F8C5A" BorderBrush="White" Foreground="White" BorderThickness="2,2,2,2" Padding="10,5" FontSize="24" Width="320" Click="BoutonInventaire_Click" FontWeight="Bold" FontFamily="Rockwell" Margin="0,0,0,60">
+            <Button x:Name="btnHistoriqueCommandes" Content="Consulter l'historique" HorizontalAlignment="Center" Background="#CC5F8C5A" BorderBrush="White" Foreground="White" BorderThickness="2,2,2,2" Padding="10,5" FontSize="24" Width="320" FontWeight="Bold" FontFamily="Rockwell" Margin="0,0,0,60" Click="btnHistoriqueCommandes_Click">
                 <Button.Resources>
                     <Style TargetType="Border">
                         <Setter Property="CornerRadius" Value="5" />
@@ -37,7 +37,7 @@
                 </Button.Resources>
             </Button>
 
-            <Button Content="Gestion des commandes" Grid.Column="0" Grid.Row="1" HorizontalAlignment="Center"  Background="#CC5F8C5A" BorderBrush="White" Foreground="White" BorderThickness="2,2,2,2" Padding="10,5" FontSize="24" Width="320" FontWeight="Bold" FontFamily="Rockwell" Click="BoutonCommandes_Click">
+            <Button x:Name="btnCreerCommande" Content="Créer une commande" HorizontalAlignment="Center"  Background="#CC5F8C5A" BorderBrush="White" Foreground="White" BorderThickness="2,2,2,2" Padding="10,5" FontSize="24" Width="320" FontWeight="Bold" FontFamily="Rockwell" Click="btnCreerCommande_Click">
                 <Button.Resources>
                     <Style TargetType="Border">
                         <Setter Property="CornerRadius" Value="5" />

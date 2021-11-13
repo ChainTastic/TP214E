@@ -6,25 +6,49 @@ using TP214E.Interface;
 
 namespace TP214E.Data
 {
-    class Recette : Produit, IDisponible
+    public class Recette : Produit, IDisponible
     {
-        public Recette(string nom, List<(Aliment, int)> lstAlimentsQtty) : base(nom)
+        private List<Ingredient> _ingredients;
+
+        public Recette(string nom, List<Ingredient> lstIngredients) : base(nom)
         {
-            LstAlimentsQtty = lstAlimentsQtty;
+            if (lstIngredients.Count == 0)
+            {
+                throw new ArgumentException("Une recette doit contenir au moins un ingrédient");
+            }
+
+            Ingredients = lstIngredients;
         }
 
-        public List<(Aliment, int)> LstAlimentsQtty { get; set; }
+        public List<Ingredient> Ingredients
+        {
+            get
+            {
+                return _ingredients;
+            }
+            set
+            {
+                if (value.Count == 0)
+                {
+                    throw new ArgumentException("Une recette doit contenir au moins un ingrédient");
+                }
+
+                _ingredients = value;
+            }
+        }
 
         public bool VerifierDisponibilite()
         {
-            if (LstAlimentsQtty.Count == 0)
+            if (Ingredients.Count == 0)
             {
                 return false;
             }
 
-            foreach (var alimentQuantiteTuple in LstAlimentsQtty)
+            foreach (var ingredient in Ingredients)
             {
-                if (alimentQuantiteTuple.Item1.Quantite < alimentQuantiteTuple.Item2)
+                Aliment aliment =
+                    PageAccueil.Inventaire.LstAliments.Find(aliment => aliment.Id == ingredient.Aliment.Id);
+                if (aliment.Quantite < ingredient.Quantite)
                 {
                     return false;
                 }

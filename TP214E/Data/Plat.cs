@@ -8,7 +8,7 @@ using TP214E.Interface;
 
 namespace TP214E.Data
 {
-    enum TypeDePlat
+    public enum TypeDePlat
     {
         Entree,
         Burger,
@@ -18,9 +18,14 @@ namespace TP214E.Data
         Enfant,
         Dessert,
     }
-    class Plat : Produit, IDisponible
+
+    public class Plat : Produit, IDisponible
     {
-        public Plat(string nom, int prix, string description, Recette recette, TypeDePlat typePlat) : base(nom)
+        private double _prix;
+
+        private string _description;
+
+        public Plat(string nom, double prix, string description, Recette recette, TypeDePlat typePlat) : base(nom)
         {
             Prix = prix;
             Description = description;
@@ -28,10 +33,43 @@ namespace TP214E.Data
             Recette = recette;
         }
 
-        public int Prix { get; set; }
-        public string Description { get; set; }
+        public double Prix
+        {
+            get
+            {
+                return _prix;
+            }
+            set
+            {
+                if (value < 0)
+                {
+                    throw new ArgumentException("Le prix ne peut pas être négatif");
+                }
+
+                _prix = value;
+            }
+        }
+
+        public string Description
+        {
+            get
+            {
+                return _description;
+            }
+            set
+            {
+                if (value == "" || value is null)
+                {
+                    throw new ArgumentException("La description est vide.");
+                }
+
+                _description = value;
+            }
+        }
+
         public TypeDePlat TypePlat { get; set; }
         public Recette Recette { get; set; }
+        public string TypePlatAsString => TypePlat.ToString();
 
         public bool VerifierDisponibilite()
         {

@@ -1,0 +1,106 @@
+[{
+  "_id": {
+    "$oid": "618f8b07fc251ec880578fa6"
+  },
+  "Nom": "recette test",
+  "Ingredients": [
+    {
+      "Aliment": {
+        "_id": {
+          "$oid": "618f3b18e248060c70288b0e"
+        },
+        "Nom": "test",
+        "Quantite": 1,
+        "Congele": false,
+        "DateExpiration": {
+          "$date": "2021-11-19T05:00:00Z"
+        }
+      },
+      "Quantite": 2
+    }
+  ]
+},{
+  "_id": {
+    "$oid": "618f8c53ca6d7a5dda96e027"
+  },
+  "Nom": "recette test",
+  "Ingredients": [
+    {
+      "Aliment": {
+        "_id": {
+          "$oid": "618f3b18e248060c70288b0e"
+        },
+        "Nom": "test",
+        "Quantite": 5,
+        "Congele": false,
+        "DateExpiration": {
+          "$date": "2021-11-19T05:00:00Z"
+        }
+      },
+      "Quantite": 2
+    }
+  ]
+},{
+  "_id": {
+    "$oid": "618f8d288c24ff9b9cb3c000"
+  },
+  "Nom": "recette test",
+  "Ingredients": [
+    {
+      "Aliment": {
+        "_id": {
+          "$oid": "618f3b18e248060c70288b0e"
+        },
+        "Nom": "test",
+        "Quantite": 5,
+        "Congele": false,
+        "DateExpiration": {
+          "$date": "2021-11-19T05:00:00Z"
+        }
+      },
+      "Quantite": 2
+    }
+  ]
+},{
+  "_id": {
+    "$oid": "618f8f109427a4e2756caf74"
+  },
+  "Nom": "recette test",
+  "Ingredients": [
+    {
+      "Aliment": {
+        "_id": {
+          "$oid": "618f3b18e248060c70288b0e"
+        },
+        "Nom": "test",
+        "Quantite": 5,
+        "Congele": false,
+        "DateExpiration": {
+          "$date": "2021-11-19T05:00:00Z"
+        }
+      },
+      "Quantite": 2
+    }
+  ]
+},{
+  "_id": {
+    "$oid": "618f90332c32270d34322d62"
+  },
+  "Nom": "recette test",
+  "Ingredients": [
+    {
+      "Aliment": {
+        "_id": {
+          "$oid": "618f3b18e248060c70288b0e"
+        },
+        "Nom": "test",
+        "Quantite": 5,
+        "Congele": false,
+        "DateExpiration": {
+          "$date": "2021-11-19T05:00:00Z"
+        }
+      },
+      "Quantite": 2
+    }
+  ]
+}]
