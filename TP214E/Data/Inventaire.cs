@@ -173,11 +173,11 @@ namespace TP214E.Data
 
             foreach (Plat plat in lstPlats)
             {
-                foreach (var AlimentQuantiteTuple in plat.Recette.Ingredients)
+                foreach (Ingredient Ingredient in plat.Recette.Ingredients)
                 {
-                    AlimentQuantiteTuple.Aliment.Quantite -= AlimentQuantiteTuple.Quantite;
+                    Ingredient.Aliment.Quantite -= Ingredient.Quantite;
 
-                    ModifierAliment(AlimentQuantiteTuple.Aliment);
+                    ModifierAliment(Ingredient.Aliment);
                 }
             }
 

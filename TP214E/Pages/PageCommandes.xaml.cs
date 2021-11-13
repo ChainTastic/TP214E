@@ -1,6 +1,10 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Globalization;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Data;
 using TP214E.Data;
 
 namespace TP214E
@@ -11,15 +15,17 @@ namespace TP214E
     public partial class PageCommandes : Page
     {
         private List<Plat> _platsDisponibles;
-        private readonly Commande _commandeEnCours;
+        private Commande _commandeEnCours;
         private DAL dal;
 
         public PageCommandes(DAL dal)
         {
-            InitializeComponent();
-            RafraichirPlatsDispo();
             this.dal = dal;
             _commandeEnCours = new Commande();
+            DataContext = _commandeEnCours;
+            InitializeComponent();
+            PageAccueil.Inventaire.LstPlats = dal.ObtenirPlats();
+            RafraichirPlatsDispo();
         }
 
         private void BtnRetour_OnClick(object sender, RoutedEventArgs e)
@@ -53,20 +59,61 @@ namespace TP214E
                 PlatCommande platCommande = new PlatCommande(platSelectionne, 1);
                 MettreAJourInventaire(platCommande, false);
                 _commandeEnCours.RetirerPlat(platCommande);
-                RafraichirCommande();
                 RafraichirPlatsDispo();
+                RafraichirCommande();
+            }
+        }
+
+        private void BtnAnnulerCommande_OnClick(object sender, RoutedEventArgs e)
+        {
+            foreach (PlatCommande platsCommande in _commandeEnCours.PlatsCommandes)
+            {
+                for (int i = 0; i < platsCommande.Quantite; i++)
+                {
+                    foreach (Ingredient ingredient in platsCommande.Plat.Recette.Ingredients)
+                    {
+                        MettreAJourQuantiteAliment(ingredient, false);
+                    }
+                }
+            }
+
+            ReinitialiserCommande();
+            RafraichirPlatsDispo();
+        }
+
+        private void BtnConfirmerCommande_OnClick(object sender, RoutedEventArgs e)
+        {
+            if (_commandeEnCours.PlatsCommandes.Count > 0)
+            {
+                PageAccueil.Inventaire.AjouterCommande(_commandeEnCours);
+                dal.AjouterCommande(_commandeEnCours);
+                ReinitialiserCommande();
+                RafraichirPlatsDispo();
+            }
+            else
+            {
+                MessageBox.Show("Vous devez ajouter des plats à votre commande.", "Attention", MessageBoxButton.OK,
+                    MessageBoxImage.Warning);
             }
         }
 
         private void MettreAJourInventaire(PlatCommande platCommande, bool estAjout)
         {
-            foreach (Ingredient ingredient in platCommande.Plat.Recette.Ingredients)
+            if (platCommande.Plat.Recette.VerifierDisponibilite())
             {
-                MettreAJourQuantiteAliment(platCommande.Quantite, ingredient, estAjout);
+                foreach (Ingredient ingredient in platCommande.Plat.Recette.Ingredients)
+                {
+                    MettreAJourQuantiteAliment(ingredient, estAjout);
+                }
+            }
+            else
+            {
+                MessageBox.Show("Vous n'avez pas suffisament d'ingrédients pour ajouter un plat de plus", "Attention",
+                    MessageBoxButton.OK, MessageBoxImage.Warning);
             }
         }
 
-        private void MettreAJourQuantiteAliment(int quantitePlat, Ingredient ingredient, bool estAjout)
+        private void MettreAJourQuantiteAliment(Ingredient ingredient, bool estAjout)
         {
             Aliment aliment =
                 PageAccueil.Inventaire.LstAliments.Find(aliment => aliment.Id == ingredient.Aliment.Id);
@@ -74,19 +121,15 @@ namespace TP214E
             {
                 if (estAjout)
                 {
-                    if (aliment.Quantite < ingredient.Quantite * quantitePlat)
+                    if (aliment.Quantite >= ingredient.Quantite)
                     {
-                        MessageBox.Show("Vous n'avez pas suffisament d'ingrédients pour ajouter un plat de plus", "Attention", MessageBoxButton.OK, MessageBoxImage.Warning);
-                    }
-                    else
-                    {
-                        aliment.Quantite -= ingredient.Quantite * quantitePlat;
+                        aliment.Quantite -= ingredient.Quantite;
                         dal.ModifierAliment(aliment.Id, aliment);
                     }
                 }
                 else
                 {
-                    aliment.Quantite += ingredient.Quantite * quantitePlat;
+                    aliment.Quantite += ingredient.Quantite;
                     dal.ModifierAliment(aliment.Id, aliment);
                 }
             }
@@ -95,15 +138,44 @@ namespace TP214E
         private void RafraichirCommande()
         {
             lstBoxCommande.Items.Clear();
+            grilleCommande.DataContext = _commandeEnCours;
             foreach (PlatCommande plat in _commandeEnCours.PlatsCommandes)
             {
                 lstBoxCommande.Items.Add(plat);
             }
+
+            FaireCalculCommande();
+            MettreAJourLesPrix();
+        }
+
+        private void MettreAJourLesPrix()
+        {
+            txtSousTotalCommande.Text = $"{_commandeEnCours.SousTotal:c}";
+            txtTPSCommande.Text = $"{_commandeEnCours.TPS:c}";
+            txtTVQCommande.Text = $"{_commandeEnCours.TVQ:c}";
+            txtTotalCommande.Text = $"{_commandeEnCours.Total:c}";
+        }
+
+        private void FaireCalculCommande()
+        {
+            _commandeEnCours.SousTotal = _commandeEnCours.CalculerSousTotal();
+            _commandeEnCours.TPS = _commandeEnCours.CalculerTPS();
+            _commandeEnCours.TVQ = _commandeEnCours.CalculerTVQ();
+            _commandeEnCours.Total = _commandeEnCours.CalculerTotal();
         }
 
         private void RafraichirPlatsDispo()
         {
-            _platsDisponibles = PageAccueil.Inventaire.ConsulterLesPLatsDisponibles();
+            if (PageAccueil.Inventaire != null)
+            {
+                PageAccueil.Inventaire.LstPlats = dal.ObtenirPlats();
+                _platsDisponibles = PageAccueil.Inventaire.ConsulterLesPLatsDisponibles();
+            }
+            else
+            {
+                _platsDisponibles = PageAccueil.Inventaire.ConsulterLesPLatsDisponibles();
+            }
+
             lstBoxPlatsDispo.ItemsSource = _platsDisponibles;
         }
 
@@ -112,8 +184,15 @@ namespace TP214E
             Button button = (Button) sender;
             if (button.DataContext is PlatCommande platCommandeSelectionne)
             {
+                if (platCommandeSelectionne.Quantite <= 1)
+                {
+                    _commandeEnCours.PlatsCommandes.Remove(platCommandeSelectionne);
+                }
+
                 platCommandeSelectionne.Quantite -= 1;
                 MettreAJourInventaire(platCommandeSelectionne, false);
+                RafraichirPlatsDispo();
+                RafraichirCommande();
             }
         }
 
@@ -122,9 +201,27 @@ namespace TP214E
             Button button = (Button) sender;
             if (button.DataContext is PlatCommande platCommandeSelectionne)
             {
-                platCommandeSelectionne.Quantite += 1;
-                MettreAJourInventaire(platCommandeSelectionne, true);
+                if (platCommandeSelectionne.Plat.Recette.VerifierDisponibilite())
+                {
+                    platCommandeSelectionne.Quantite += 1;
+                    MettreAJourInventaire(platCommandeSelectionne, true);
+                    RafraichirPlatsDispo();
+                    RafraichirCommande();
+                }
+                else
+                {
+                    MessageBox.Show("Vous n'avez pas suffisament d'ingrédients pour ajouter un plat de plus",
+                        "Attention",
+                        MessageBoxButton.OK, MessageBoxImage.Warning);
+                }
             }
+        }
+
+
+        private void ReinitialiserCommande()
+        {
+            _commandeEnCours = new Commande();
+            RafraichirCommande();
         }
     }
 }

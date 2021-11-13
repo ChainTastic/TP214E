@@ -20,11 +20,8 @@ namespace TP214E
         {
             InitializeComponent();
             dal = new DAL();
-            Inventaire = new Inventaire();
-            Inventaire.LstAliments = dal.Aliments();
-            Inventaire.LstRecettes = dal.ObtenirRecettes();
+            Inventaire = new Inventaire(dal.Aliments(), dal.ObtenirRecettes(), dal.ObtenirCommandes(), dal.ObtenirPlats());
             Inventaire.LstPlats = dal.ObtenirPlats();
-            Inventaire.LstCommandesTraite = dal.ObtenirCommandes();
         }
 
 
