@@ -21,8 +21,6 @@ namespace TP214E.Data
 
         public List<PlatCommande> PlatsCommandes { get; set; }
 
-
-
         public void RetirerPlat(PlatCommande platCommande)
         {
             PlatsCommandes.Remove(platCommande);
