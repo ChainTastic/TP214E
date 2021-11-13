@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 using System.Windows.Shell;
+using System.Xml.Schema;
 using MongoDB.Bson;
 using TP214E.Interface;
 
@@ -30,6 +31,8 @@ namespace TP214E.Data
         public DateTime Date { get; set; }
 
         public ObjectId Id { get; set; }
+
+        public string TotalFormatte => $"{Total:C}";
 
         public List<PlatCommande> PlatsCommandes { get; set; }
 

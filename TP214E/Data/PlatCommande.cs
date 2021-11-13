@@ -33,6 +33,8 @@ namespace TP214E.Data
 
         public double SousTotal => Plat.Prix * Quantite;
 
+        public string SousTotalFormatte => $"{SousTotal:C}";
+
         public bool IngredientsSontDisponibles()
         {
             return Plat.Recette.VerifierDisponibilite();

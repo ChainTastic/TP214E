@@ -8,54 +8,84 @@
       d:DesignHeight="450" d:DesignWidth="800"
       Title="Historique Commandes">
 
-    <Grid ShowGridLines="True" Background="Black">
+    <Grid ShowGridLines="False" Background="Black">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="100"/>
-            <ColumnDefinition Width="*"/>
-            <ColumnDefinition Width="100"/>
+            <ColumnDefinition Width="0.7*"/>
+            <ColumnDefinition Width="0.1*"/>
+            <ColumnDefinition Width="0.5*"/>
+            <ColumnDefinition Width="0.1*"/>
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
             <RowDefinition Height="0.2*"/>
+            <RowDefinition Height="0.1*"/>
             <RowDefinition Height="*"/>
             <RowDefinition Height="0.2*"/>
         </Grid.RowDefinitions>
         <Button x:Name="btnRetour" Grid.Row="0"  Grid.Column="0" Content="Retour" Click="BtnRetour_OnClick" Background="#00DDDDDD" FontFamily="Rockwell" Foreground="#FFFFFDFD" FontSize="18"></Button>
-        <Label Grid.Row="0" Grid.Column="1" Content="Inventaire Chez Victor" Foreground="#FF5F8C5A" HorizontalAlignment="Center" VerticalAlignment="Center" FontFamily="Rockwell" FontSize="36" FontWeight="Normal"/>
-
-        <Label Grid.Row="2" Grid.Column="1" Content="Conception et &#10;qualité logicielle" Foreground="#FFF" HorizontalAlignment="Right" VerticalAlignment="Center" FontFamily="Rockwell" FontSize="12" FontWeight="Bold" Margin="0,0,10,0"/>
-        <Label Grid.Row="2" Grid.Column="2" Content="TP2" Foreground="#FFF" HorizontalAlignment="Center" VerticalAlignment="Center" FontFamily="Rockwell" FontSize="12" FontWeight="Bold"/>
-        <ListBox Grid.Row="1" Grid.Column="1" Name="lstBoxCommandes">
+        <Label Grid.Row="0" Grid.Column="1" Grid.ColumnSpan="3" Content="Historique des Commandes" Foreground="#FF5F8C5A" HorizontalAlignment="Center" VerticalAlignment="Center" FontFamily="Rockwell" FontSize="36" FontWeight="Normal"/>
+        <Label Grid.Row="1" Grid.Column="1" Content="Liste des commandes" Foreground="#FFF" HorizontalAlignment="Left" VerticalAlignment="Center" FontFamily="Rockwell" FontSize="14" FontWeight="Bold" Margin="0,0,10,0"/>
+        <Label Grid.Row="1" Grid.Column="3" Content="Plats :" Foreground="#FFF" HorizontalAlignment="Left" VerticalAlignment="Center" FontFamily="Rockwell" FontSize="14" FontWeight="Bold" Margin="0,0,10,0"/>
+        <StackPanel Grid.Row="2" Grid.Column="3" Orientation="Vertical"  >
+            <Label x:Name="LblArticles" Foreground="#FFF" HorizontalAlignment="Right" VerticalAlignment="Top" FontFamily="Rockwell" FontSize="12" FontWeight="Bold" Margin="0,0,10,0" Padding="0, 20,0,0"/>
+        </StackPanel>
+        <ListBox x:Name="lstBoxCommandes" Grid.Row="2" Grid.Column="1" SelectionChanged="LstBoxCommandes_OnSelectionChanged">
             <ListBox.ItemTemplate>
                 <DataTemplate>
                     <Grid ShowGridLines="False">
 
                         <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="90"></ColumnDefinition>
                             <ColumnDefinition Width="Auto"></ColumnDefinition>
                             <ColumnDefinition Width="220"></ColumnDefinition>
                             <ColumnDefinition Width="Auto"></ColumnDefinition>
                         </Grid.ColumnDefinitions>
 
-                        <TextBlock Grid.Column="0" Text="{Binding Nom}" FontSize="16" FontWeight="Bold" HorizontalAlignment="Center" VerticalAlignment="Center" FontFamily="Rockwell" Margin="10,0" TextWrapping="Wrap"></TextBlock>
-                        <StackPanel Grid.Column="1" Orientation="Vertical" VerticalAlignment="Center" Margin="10,0">
-                            <Label HorizontalAlignment="Center" FontFamily="Rockwell" Content="Date expiration :"></Label>
-                            <TextBlock HorizontalAlignment="Center" Text="{Binding DateExpiration}" FontFamily="Rockwell"></TextBlock>
+                        <StackPanel Grid.Column="0" Orientation="Vertical" VerticalAlignment="Center" Margin="10,0">
+                            <Label HorizontalAlignment="Center" FontFamily="Rockwell" Content="Date :"></Label>
+                            <TextBlock HorizontalAlignment="Center" Text="{Binding Date}" FontFamily="Rockwell"></TextBlock>
 
                         </StackPanel>
-                        <StackPanel Grid.Column="2" Orientation="Vertical" Margin="10, 0" VerticalAlignment="Center" HorizontalAlignment="Center">
+                        <StackPanel Grid.Column="1" Orientation="Vertical" Margin="10, 0" VerticalAlignment="Center" HorizontalAlignment="Center">
                             <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-                                <Label Content="Quantité: " FontFamily="Rockwell"></Label>
-                                <Label Content="{Binding Quantite}" FontFamily="Rockwell"></Label>
-                            </StackPanel>
-                            <StackPanel Orientation="Horizontal" >
-                                <Label Content="État congélation: " FontFamily="Rockwell"></Label>
-                                <Label Content="{Binding CongeleAsString}" FontFamily="Rockwell"></Label>
+                                <Label Content="Total: " FontFamily="Rockwell"></Label>
+                                <Label Content="{Binding TotalFormatte}" FontFamily="Rockwell"></Label>
                             </StackPanel>
                         </StackPanel>
                     </Grid>
                 </DataTemplate>
             </ListBox.ItemTemplate>
         </ListBox>
-        <Image Grid.Row="0" Grid.Column="2" Source="/Ressources/Images/victorLogo1.png"/>
+        <ListBox x:Name="lstBoxPlats" Grid.Row="2" Grid.Column="3">
+            <ListBox.ItemTemplate>
+                <DataTemplate>
+                    <Grid ShowGridLines="False">
+
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"></ColumnDefinition>
+                            <ColumnDefinition Width="Auto"></ColumnDefinition>
+                            <ColumnDefinition Width="Auto"></ColumnDefinition>
+                        </Grid.ColumnDefinitions>
+
+                        <StackPanel Grid.Column="0" Orientation="Vertical" VerticalAlignment="Center" Margin="10,0">
+                            <TextBlock HorizontalAlignment="Center" Text="{Binding Plat.Nom}" FontFamily="Rockwell"></TextBlock>
+
+                        </StackPanel>
+                        <StackPanel Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
+                            <Label Content="Quantité: " FontFamily="Rockwell"></Label>
+                            <Label Content="{Binding Quantite}" FontFamily="Rockwell"></Label>
+                        </StackPanel>
+                        <StackPanel Grid.Column="2" Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
+                            <Label Content="Sous-Total: " FontFamily="Rockwell"></Label>
+                            <Label Content="{Binding SousTotalFormatte}" FontFamily="Rockwell"></Label>
+                        </StackPanel>
+                        
+                    </Grid>
+                </DataTemplate>
+            </ListBox.ItemTemplate>
+        </ListBox>
+        <Label Grid.Row="3" Grid.Column="3" Content="Conception et &#10;qualité logicielle" Foreground="#FFF" HorizontalAlignment="Right" VerticalAlignment="Center" FontFamily="Rockwell" FontSize="12" FontWeight="Bold" Margin="0,0,10,0"/>
+        <Label Grid.Row="3" Grid.Column="4" Content="TP2" Foreground="#FFF" HorizontalAlignment="Center" VerticalAlignment="Center" FontFamily="Rockwell" FontSize="12" FontWeight="Bold"/>
+
+        
     </Grid>
 </Page>

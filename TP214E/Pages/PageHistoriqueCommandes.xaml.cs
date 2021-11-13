@@ -31,5 +31,24 @@ namespace TP214E.Pages
                 NavigationService.GoBack();
             }
         }
+
+        private void LstBoxCommandes_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            int index = lstBoxCommandes.SelectedIndex;
+            if (index != -1)
+            {
+                Commande commandeSelectionne = (Commande) lstBoxCommandes.Items[index];
+                RafraichirArticles(commandeSelectionne);
+            }
+        }
+
+        private void RafraichirArticles(Commande commandeSelectionne)
+        {
+            lstBoxPlats.Items.Clear();
+            foreach (PlatCommande platCommande in commandeSelectionne.PlatsCommandes)
+            {
+                lstBoxPlats.Items.Add(platCommande);
+            }
+        }
     }
 }
