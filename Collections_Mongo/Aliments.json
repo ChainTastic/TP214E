@@ -1,0 +1,11 @@
+[{
+  "_id": {
+    "$oid": "618f3b18e248060c70288b0e"
+  },
+  "Nom": "aliment test",
+  "Quantite": 2,
+  "Congele": false,
+  "DateExpiration": {
+    "$date": "2021-11-19T05:00:00Z"
+  }
+}]

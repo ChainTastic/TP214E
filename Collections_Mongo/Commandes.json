@@ -1,0 +1,95 @@
+[{
+  "_id": {
+    "$oid": "619011af712fc7ac1afb0c4f"
+  },
+  "Total": 14.371875,
+  "TVQ": 1.246875,
+  "TPS": 0.625,
+  "SousTotal": 12.5,
+  "Date": {
+    "$date": "2021-11-13T19:27:43.643Z"
+  },
+  "PlatsCommandes": [
+    {
+      "Plat": {
+        "_id": {
+          "$oid": "618f8b07fc251ec880578fa7"
+        },
+        "Nom": "Plat test",
+        "Prix": 12.5,
+        "Description": "burger test",
+        "TypePlat": 1,
+        "Recette": {
+          "_id": {
+            "$oid": "618f8b07fc251ec880578fa6"
+          },
+          "Nom": "recette test",
+          "Ingredients": [
+            {
+              "Aliment": {
+                "_id": {
+                  "$oid": "618f3b18e248060c70288b0e"
+                },
+                "Nom": "test",
+                "Quantite": 1,
+                "Congele": false,
+                "DateExpiration": {
+                  "$date": "2021-11-19T05:00:00Z"
+                }
+              },
+              "Quantite": 2
+            }
+          ]
+        }
+      },
+      "Quantite": 1
+    }
+  ]
+},{
+  "_id": {
+    "$oid": "619012207349996a10ddc8d9"
+  },
+  "Total": 14.371875,
+  "TVQ": 1.246875,
+  "TPS": 0.625,
+  "SousTotal": 12.5,
+  "Date": {
+    "$date": "2021-11-13T19:29:36.699Z"
+  },
+  "PlatsCommandes": [
+    {
+      "Plat": {
+        "_id": {
+          "$oid": "618f8b07fc251ec880578fa7"
+        },
+        "Nom": "Plat test",
+        "Prix": 12.5,
+        "Description": "burger test",
+        "TypePlat": 1,
+        "Recette": {
+          "_id": {
+            "$oid": "618f8b07fc251ec880578fa6"
+          },
+          "Nom": "recette test",
+          "Ingredients": [
+            {
+              "Aliment": {
+                "_id": {
+                  "$oid": "618f3b18e248060c70288b0e"
+                },
+                "Nom": "test",
+                "Quantite": 1,
+                "Congele": false,
+                "DateExpiration": {
+                  "$date": "2021-11-19T05:00:00Z"
+                }
+              },
+              "Quantite": 2
+            }
+          ]
+        }
+      },
+      "Quantite": 1
+    }
+  ]
+}]
