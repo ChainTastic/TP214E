@@ -34,5 +34,7 @@ namespace TP214E.Data
             }
         }
 
+        public double SousTotal => Plat.Prix * Quantite;
+
     }
 }

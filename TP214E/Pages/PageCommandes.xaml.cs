@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Documents;
 using TP214E.Data;
 
 namespace TP214E
@@ -11,20 +10,21 @@ namespace TP214E
     /// </summary>
     public partial class PageCommandes : Page
     {
-        private List<Plat> PlatsDisponibles;
-        private Commande commandeEnCours;
+        private List<Plat> _platsDisponibles;
+        private readonly Commande _commandeEnCours;
         private DAL dal;
+
         public PageCommandes(DAL dal)
         {
             InitializeComponent();
             RafraichirPlatsDispo();
             this.dal = dal;
-            commandeEnCours = new Commande();
+            _commandeEnCours = new Commande();
         }
 
         private void BtnRetour_OnClick(object sender, RoutedEventArgs e)
         {
-            if (NavigationService != null && NavigationService.CanGoBack)
+            if (NavigationService is {CanGoBack: true})
             {
                 NavigationService.GoBack();
             }
@@ -35,20 +35,13 @@ namespace TP214E
             int index = lstBoxPlatsDispo.SelectedIndex;
             if (index != -1)
             {
-                PlatCommande platSelectionne = (PlatCommande) lstBoxPlatsDispo.Items[index];
-                foreach (Ingredient ingredient in platSelectionne.Plat.Recette.Ingredients)
-                {
-                    Aliment aliment =
-                        PageAccueil.Inventaire.LstAliments.Find(aliment => aliment.Id == ingredient.Aliment.Id);
-                    aliment.Quantite -= ingredient.Quantite;
-                    PageAccueil.Inventaire.ModifierAliment(aliment);
-                    commandeEnCours.AjouterPlat(platSelectionne);
-                    dal.ModifierAliment(aliment.Id, aliment);
-                }
+                Plat platSelectionne = (Plat) lstBoxPlatsDispo.Items[index];
+                PlatCommande platCommande = new PlatCommande(platSelectionne, 1);
+                MettreAJourInventaire(platCommande, true);
+                _commandeEnCours.AjouterPlat(platCommande);
                 RafraichirCommande();
                 RafraichirPlatsDispo();
             }
-            
         }
 
         private void BtnRetirerPlat_OnClick(object sender, RoutedEventArgs e)
@@ -56,48 +49,53 @@ namespace TP214E
             int index = lstBoxCommande.SelectedIndex;
             if (index != -1)
             {
-                PlatCommande platSelectionne = (PlatCommande)lstBoxCommande.Items[index];
-                foreach (Ingredient ingredient in platSelectionne.Plat.Recette.Ingredients)
-                {
-                    Aliment aliment =
-                        PageAccueil.Inventaire.LstAliments.Find(aliment => aliment.Id == ingredient.Aliment.Id);
-                    
-
-                    aliment.Quantite += ingredient.Quantite;
-                    PageAccueil.Inventaire.ModifierAliment(aliment);
-                    commandeEnCours.RetirerPlat(platSelectionne);
-                    dal.ModifierAliment(aliment.Id, aliment);
-                }
+                Plat platSelectionne = (Plat) lstBoxPlatsDispo.Items[index];
+                PlatCommande platCommande = new PlatCommande(platSelectionne, 1);
+                MettreAJourInventaire(platCommande, false);
+                _commandeEnCours.RetirerPlat(platCommande);
                 RafraichirCommande();
                 RafraichirPlatsDispo();
             }
         }
 
-
-        private void MettreAJourInventaire(Plat plat)
+        private void MettreAJourInventaire(PlatCommande platCommande, bool estAjout)
         {
-            foreach (Ingredient ingredient in plat.Recette.Ingredients)
+            foreach (Ingredient ingredient in platCommande.Plat.Recette.Ingredients)
             {
-                MettreAJourQuantiteAliment(ingredient);
+                MettreAJourQuantiteAliment(platCommande.Quantite, ingredient, estAjout);
             }
         }
 
-        private void MettreAJourQuantiteAliment(Ingredient ingredient)
+        private void MettreAJourQuantiteAliment(int quantitePlat, Ingredient ingredient, bool estAjout)
         {
             Aliment aliment =
                 PageAccueil.Inventaire.LstAliments.Find(aliment => aliment.Id == ingredient.Aliment.Id);
             if (aliment != null)
             {
-                aliment.Quantite -= ingredient.Quantite;
-                PageAccueil.Inventaire.ModifierAliment(aliment);
-                dal.ModifierAliment(aliment.Id,aliment);
+                if (estAjout)
+                {
+                    if (aliment.Quantite < ingredient.Quantite * quantitePlat)
+                    {
+                        MessageBox.Show("Vous n'avez pas suffisament d'ingrédients pour ajouter un plat de plus", "Attention", MessageBoxButton.OK, MessageBoxImage.Warning);
+                    }
+                    else
+                    {
+                        aliment.Quantite -= ingredient.Quantite * quantitePlat;
+                        dal.ModifierAliment(aliment.Id, aliment);
+                    }
+                }
+                else
+                {
+                    aliment.Quantite += ingredient.Quantite * quantitePlat;
+                    dal.ModifierAliment(aliment.Id, aliment);
+                }
             }
         }
 
         private void RafraichirCommande()
         {
             lstBoxCommande.Items.Clear();
-            foreach (PlatCommande plat in commandeEnCours.PlatsCommandes)
+            foreach (PlatCommande plat in _commandeEnCours.PlatsCommandes)
             {
                 lstBoxCommande.Items.Add(plat);
             }
@@ -105,10 +103,28 @@ namespace TP214E
 
         private void RafraichirPlatsDispo()
         {
-            PlatsDisponibles = PageAccueil.Inventaire.ConsulterLesPLatsDisponibles();
-            lstBoxPlatsDispo.ItemsSource = PlatsDisponibles;
+            _platsDisponibles = PageAccueil.Inventaire.ConsulterLesPLatsDisponibles();
+            lstBoxPlatsDispo.ItemsSource = _platsDisponibles;
         }
 
-        
+        private void BtnReduireQtty_OnClick(object sender, RoutedEventArgs e)
+        {
+            Button button = (Button) sender;
+            if (button.DataContext is PlatCommande platCommandeSelectionne)
+            {
+                platCommandeSelectionne.Quantite -= 1;
+                MettreAJourInventaire(platCommandeSelectionne, false);
+            }
+        }
+
+        private void BtnAugmenterQtty_OnClick(object sender, RoutedEventArgs e)
+        {
+            Button button = (Button) sender;
+            if (button.DataContext is PlatCommande platCommandeSelectionne)
+            {
+                platCommandeSelectionne.Quantite += 1;
+                MettreAJourInventaire(platCommandeSelectionne, true);
+            }
+        }
     }
 }

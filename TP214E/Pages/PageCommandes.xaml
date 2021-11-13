@@ -63,12 +63,37 @@
                             <ColumnDefinition Width="*"></ColumnDefinition>
                             <ColumnDefinition Width="150"></ColumnDefinition>
                         </Grid.ColumnDefinitions>
-                        <TextBlock Grid.Column="0" Text="{Binding Nom}" FontSize="18" FontWeight="Bold" HorizontalAlignment="Center" VerticalAlignment="Center" FontFamily="Rockwell" Margin="10,0"></TextBlock>
-                        <StackPanel Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Center">
-                            <TextBlock Text="Prix : " FontSize="12" FontWeight="Bold" HorizontalAlignment="Right" VerticalAlignment="Center" FontFamily="Rockwell" ></TextBlock>
-                            <TextBlock Text="{Binding Prix}" FontSize="12" FontWeight="Bold" HorizontalAlignment="Right" VerticalAlignment="Center" FontFamily="Rockwell">$</TextBlock>
-
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="*"></RowDefinition>
+                            <RowDefinition Height="*"></RowDefinition>
+                        </Grid.RowDefinitions>
+                        <TextBlock Grid.Row="0" Grid.Column="0" Text="{Binding Plat.Nom}" FontSize="18" FontWeight="Bold" HorizontalAlignment="Center" VerticalAlignment="Center" FontFamily="Rockwell" Margin="10,0"></TextBlock>
+                        <StackPanel Grid.Row="0" Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Right">
+                            <Button x:Name="btnReduireQtty" Content="-" FontSize="18" HorizontalAlignment="Center" VerticalAlignment="Center" FontFamily="Rockwell" Click="BtnReduireQtty_OnClick">
+                                <Button.Resources>
+                                    <Style TargetType="Border">
+                                        <Setter Property="CornerRadius" Value="5"/>
+                                    </Style>
+                                </Button.Resources>
+                            </Button>
+                            <TextBlock Text="{Binding Quantite}" FontSize="12" FontWeight="Bold" HorizontalAlignment="Center" VerticalAlignment="Center" FontFamily="Rockwell" Margin="10,0"></TextBlock>
+                            <Button x:Name="btnAugmenterQtty" Content="+" FontSize="18" HorizontalAlignment="Center" VerticalAlignment="Center" FontFamily="Rockwell" Click="BtnAugmenterQtty_OnClick">
+                                <Button.Resources>
+                                    <Style TargetType="Border">
+                                        <Setter Property="CornerRadius" Value="5"/>
+                                    </Style>
+                                </Button.Resources>
+                            </Button>
                         </StackPanel>
+                        <StackPanel Grid.Row="1" Grid.Column="0" Orientation="Vertical" HorizontalAlignment="Right" VerticalAlignment="Center">
+                            <TextBlock Text="Prix Unitaire: " FontSize="12" FontWeight="Bold" HorizontalAlignment="Right" VerticalAlignment="Center" FontFamily="Rockwell" ></TextBlock>
+                            <TextBlock Text="{Binding Plat.Prix}" FontSize="12" FontWeight="Bold" HorizontalAlignment="Left" VerticalAlignment="Center" FontFamily="Rockwell">$</TextBlock>
+                        </StackPanel>
+                        <StackPanel Grid.Row="1" Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Center">
+                            <TextBlock Text="Sous-total: " FontSize="12" FontWeight="Bold" HorizontalAlignment="Right" VerticalAlignment="Center" FontFamily="Rockwell" ></TextBlock>
+                            <TextBlock Text="{Binding SousTotal}" FontSize="12" FontWeight="Bold" HorizontalAlignment="Right" VerticalAlignment="Center" FontFamily="Rockwell">$</TextBlock>
+                        </StackPanel>
+
                     </Grid>
                 </DataTemplate>
             </ListBox.ItemTemplate>
