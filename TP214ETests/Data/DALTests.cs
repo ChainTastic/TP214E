@@ -10,6 +10,12 @@ namespace TP214E.Data.Tests
         [TestMethod()]
         public void Test()
         {
+            var DALMock = new Mock<IDAL>();
+
+            //configuration du mock pour que la fausse voiture retourne True 
+            //si sa méthode peutPrendreLaRoute est appelée
+            
+            
             
         }
 

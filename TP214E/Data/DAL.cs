@@ -7,7 +7,7 @@ using MongoDB.Bson.Serialization;
 
 namespace TP214E.Data
 {
-    public class DAL
+    public class DAL : IDAL
     {
         public MongoClient mongoDBClient;
         private IMongoCollection<Aliment> collectionAliments;
