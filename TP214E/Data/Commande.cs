@@ -6,26 +6,31 @@ using TP214E.Interface;
 
 namespace TP214E.Data
 {
-    class Commande : Produit, IDisponible
+    public class Commande
     {
-        public Commande(string nom, List<Plat> lstPlats) : base(nom)
+        public Commande()
         {
-            LstPlats = lstPlats;
+            Id = ObjectId.GenerateNewId();
+            Date = DateTime.Now;
+            PlatsCommandes = new List<PlatCommande>();
         }
 
-        public List<Plat> LstPlats { get; set; }
+        public DateTime Date { get; set; }
 
-        public bool VerifierDisponibilite()
+        public ObjectId Id { get; set; }
+
+        public List<PlatCommande> PlatsCommandes { get; set; }
+
+
+
+        public void RetirerPlat(PlatCommande platCommande)
         {
-            foreach (Plat plat in LstPlats)
-            {
-                if (!plat.VerifierDisponibilite())
-                {
-                    return false;
-                }
-            }
-            return true;
+            PlatsCommandes.Remove(platCommande);
         }
 
+        public void AjouterPlat(PlatCommande platCommande)
+        {
+            PlatsCommandes.Add(platCommande);
+        }
     }
 }

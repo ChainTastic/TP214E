@@ -1,27 +1,15 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 using TP214E.Data;
 
 namespace TP214E.Formulaires
 {
     /// <summary>
-    /// Interaction logic for FormulaireAjoutModifAliment.xaml
+    ///     Interaction logic for FormulaireAjoutModifAliment.xaml
     /// </summary>
     public partial class FormulaireAjoutModifAliment : Window
     {
-
-        public Aliment Aliment { get; private set; }
-
         public FormulaireAjoutModifAliment()
         {
             InitializeComponent();
@@ -38,19 +26,15 @@ namespace TP214E.Formulaires
                 txtNom.Text = alimentAModifier.Nom;
                 txtQuantite.Text = alimentAModifier.Quantite.ToString();
                 if (Aliment.Congele)
-                {
                     rbCongele.IsChecked = true;
-                }
                 else
-                {
                     rbNonCongele.IsChecked = true;
-                }
 
-                dpDateExpiration.SelectedDate = alimentAModifier.ExpireLe;
-
+                dpDateExpiration.SelectedDate = alimentAModifier.DateExpiration;
             }
-
         }
+
+        public Aliment Aliment { get; private set; }
 
         private void BtnAnnuler_OnClick(object sender, RoutedEventArgs e)
         {
@@ -59,86 +43,96 @@ namespace TP214E.Formulaires
 
         private void btnSauvegarder_Click(object sender, RoutedEventArgs e)
         {
-            ValiderAlimentFormulaire();
-
-        }
-
-        private void ValiderAlimentFormulaire()
-        {
-            try
+            if (!ChampsFormulaireRemplis())
             {
-                bool estCongele = VerifierAlimentCongele(rbCongele);
-                if (FormulaireEstValide())
+                EnvoyerMessageAvertissement("Veuilez vous assurez de bien remplir tous les champs");
+            }
+            else
+            {
+                try
                 {
-                    Aliment = new Aliment(txtNom.Text.Trim(), Convert.ToInt32(txtQuantite.Text), estCongele, dpDateExpiration.SelectedDate.Value);
+                    Aliment = Aliment == null ? CreerNouvelleAliment() : ModifierAliment(Aliment);
                     DialogResult = true;
                 }
-            }
-            catch (ArgumentException erreur)
-            {
-                MessageBox.Show(erreur.Message);
+                catch (ArgumentException erreur)
+                {
+                    EnvoyerMessageAvertissement(erreur.Message);
+                }
             }
         }
 
-        private bool FormulaireEstValide()
+        private Aliment ModifierAliment(Aliment alimentAModifier)
         {
-            if (ChampsRemplis() && QuantiteContientNombre(txtQuantite.Text))
-            {
-                return true;
-            }
-
-            return false;
+            alimentAModifier.Nom = txtNom.Text.Trim();
+            alimentAModifier.Quantite = Convert.ToInt32(txtQuantite.Text);
+            alimentAModifier.Congele = VerifierAlimentCongele(rbCongele);
+            alimentAModifier.DateExpiration = dpDateExpiration.SelectedDate.Value.Date;
+            return alimentAModifier;
         }
 
-        private bool ChampsRemplis()
+        private Aliment CreerNouvelleAliment()
         {
-            if (string.IsNullOrEmpty(txtNom.Text) || string.IsNullOrEmpty(txtQuantite.Text))
-            {
-                EnvoyerMessageChampNonRemplis();
-                return false;
-            }
-
-            if (rbCongele.IsChecked == false && rbNonCongele.IsChecked == false)
-            {
-                EnvoyerMessageChampNonRemplis();
-                return false;
-            }
-
-            if (!dpDateExpiration.SelectedDate.HasValue)
-            {
-                EnvoyerMessageChampNonRemplis();
-                return false;
-            }
-
-            return true;
-        }
-
-        private void EnvoyerMessageChampNonRemplis()
-        {
-            MessageBox.Show(
-                "Veuilez vous assurez de bien remplir tout les champs",
-                "Attention",
-                MessageBoxButton.OK,
-                MessageBoxImage.Warning
+            Aliment nouvelleAliment = new Aliment(
+                txtNom.Text.Trim(),
+                Convert.ToInt32(txtQuantite.Text),
+                VerifierAlimentCongele(rbCongele),
+                dpDateExpiration.SelectedDate.Value
             );
+            return nouvelleAliment;
         }
 
-        private bool QuantiteContientNombre(string textQuantite)
+        private void EnvoyerMessageAvertissement(string messageErreur)
         {
-            int quantite;
-            if (!int.TryParse(textQuantite, out quantite))
+            MessageBox.Show(messageErreur, "Attention", MessageBoxButton.OK, MessageBoxImage.Warning);
+        }
+
+
+        private bool ChampsFormulaireRemplis()
+        {
+            if (!ChampTexteRemplis(txtNom))
             {
-                MessageBox.Show(
-                    "La valeur entré pour le champ quantité n'est pas valide. Veuillez entrer un nombre entier.", 
-                    "Erreur",
-                    MessageBoxButton.OK, 
-                    MessageBoxImage.Error
-                    );
+                return false;
+            }
+
+            if (!ChampTexteRemplis(txtQuantite))
+            {
+                return false;
+            }
+
+            if (!ChampCongeleRemplis())
+            {
+                return false;
+            }
+
+            if (!ChampDateRemplis())
+            {
                 return false;
             }
 
             return true;
         }
+
+        private bool ChampDateRemplis()
+        {
+            return dpDateExpiration.SelectedDate.HasValue;
+        }
+
+        private bool ChampCongeleRemplis()
+        {
+            return ChampRadioRemplis(rbCongele) || ChampRadioRemplis(rbNonCongele);
+        }
+
+        private bool ChampRadioRemplis(RadioButton radioButton)
+        {
+            return radioButton.IsChecked != null && (bool) radioButton.IsChecked;
+        }
+
+
+        private bool ChampTexteRemplis(TextBox champText)
+        {
+            return !string.IsNullOrEmpty(champText.Text);
+        }
+
 
         private bool VerifierAlimentCongele(RadioButton boutonEstCongele)
         {

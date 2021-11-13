@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Navigation;
 using TP214E.Data;
 
 namespace TP214E
@@ -11,23 +13,33 @@ namespace TP214E
     public partial class PageAccueil : Page
     {
         private DAL dal;
+        public static Inventaire Inventaire;
+
 
         public PageAccueil()
         {
             InitializeComponent();
             dal = new DAL();
+            Inventaire = new Inventaire();
+            Inventaire.LstAliments = dal.Aliments();
+            Inventaire.LstRecettes = dal.ObtenirRecettes();
+            Inventaire.LstPlats = dal.ObtenirPlats();
+            Inventaire.LstCommandesTraite = dal.ObtenirCommandes();
         }
+
 
         private void BoutonInventaire_Click(object sender, RoutedEventArgs e)
         {
             PageInventaire frmInventaire = new PageInventaire(dal);
 
-            this.NavigationService.Navigate(frmInventaire);
+            NavigationService navigationService = this.NavigationService;
+            navigationService?.Navigate(frmInventaire);
         }
 
         private void BoutonCommandes_Click(object sender, RoutedEventArgs e)
         {
-            this.NavigationService.Navigate(new Uri("Pages/PageCommandes.xaml", UriKind.Relative));
+            NavigationService navigationService = this.NavigationService;
+            navigationService?.Navigate(new PageCommandes(dal));
         }
     }
 }

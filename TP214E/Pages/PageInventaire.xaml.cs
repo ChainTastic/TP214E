@@ -19,7 +19,6 @@ namespace TP214E
             InitializeComponent();
             this.dal = dal;
             RafraichirInventaire();
-
         }
 
 
@@ -35,17 +34,18 @@ namespace TP214E
         {
             Button button = (Button) sender;
             Aliment alimentSelectionne = button.DataContext as Aliment;
-            
+
             if (alimentSelectionne != null)
             {
                 dal.RetirerAliment(alimentSelectionne);
+                PageAccueil.Inventaire.SupprimerAliment(alimentSelectionne);
                 RafraichirInventaire();
             }
         }
 
         private void btnModifer_Click(object sender, RoutedEventArgs e)
         {
-            Button button = (Button)sender;
+            Button button = (Button) sender;
             Aliment alimentSelectionne = button.DataContext as Aliment;
 
             if (alimentSelectionne != null)
@@ -54,19 +54,29 @@ namespace TP214E
                 if (formAjoutModifAliment.ShowDialog() == true)
                 {
                     dal.ModifierAliment(alimentSelectionne.Id, formAjoutModifAliment.Aliment);
+                    PageAccueil.Inventaire.ModifierAliment(formAjoutModifAliment.Aliment);
                     RafraichirInventaire();
                 }
             }
         }
 
-        //TODO Bouton AjouterAliment
-
 
         private void RafraichirInventaire()
         {
-            lstBoxAliments.ItemsSource = dal.Aliments();
+            PageAccueil.Inventaire.LstAliments = dal.Aliments();
+            lstBoxAliments.ItemsSource = PageAccueil.Inventaire.LstAliments;
         }
 
-       
+
+        private void BtnAjouter_OnClick(object sender, RoutedEventArgs e)
+        {
+            FormulaireAjoutModifAliment formAjoutModifAliment = new FormulaireAjoutModifAliment();
+            if (formAjoutModifAliment.ShowDialog() == true)
+            {
+                dal.AjouterAliment(formAjoutModifAliment.Aliment);
+                PageAccueil.Inventaire.AjouterAliment(formAjoutModifAliment.Aliment);
+                RafraichirInventaire();
+            }
+        }
     }
 }

@@ -5,7 +5,7 @@ using TP214E.Interface;
 
 namespace TP214E.Data
 {
-    class Inventaire 
+    public class Inventaire 
     {
         private const string nomCommande = "unNom";
 
@@ -75,10 +75,11 @@ namespace TP214E.Data
 
         #region Read
 
-        List<Aliment> LstAliments { get; }
-        List<Recette> LstRecettes { get; }
-        List<Commande> LstCommandesTraite { get; }
-        List<Plat> LstPlats { get; }
+        public List<Aliment> LstAliments { get; set; }
+        public List<Recette> LstRecettes { get; set; }
+        public List<Commande> LstCommandesTraite { get; set; }
+        public List<Plat> LstPlats { get; set; }
+
         #endregion
 
         #region Update
@@ -151,7 +152,7 @@ namespace TP214E.Data
         }
         #endregion
 
-        public List<Plat> ConsulterLesPLatsDispobnibles()
+        public List<Plat> ConsulterLesPLatsDisponibles()
         {
             List<Plat> lstPlatsDisponible = new List<Plat>();
 
@@ -168,15 +169,15 @@ namespace TP214E.Data
 
         public Commande CreerCommande(String nomClient,List<Plat> lstPlats)
         {
-            Commande commande = new Commande(nomClient, lstPlats);
+            Commande commande = new Commande();
 
             foreach (Plat plat in lstPlats)
             {
-                foreach (var AlimentQuantiteTuple in plat.Recette.LstAlimentsQtty)
+                foreach (var AlimentQuantiteTuple in plat.Recette.Ingredients)
                 {
-                    AlimentQuantiteTuple.Item1.Quantite -= AlimentQuantiteTuple.Item2;
+                    AlimentQuantiteTuple.Aliment.Quantite -= AlimentQuantiteTuple.Quantite;
 
-                    ModifierAliment(AlimentQuantiteTuple.Item1);
+                    ModifierAliment(AlimentQuantiteTuple.Aliment);
                 }
             }
 
@@ -185,13 +186,6 @@ namespace TP214E.Data
             return commande;
         }
 
-
-        public bool CommandeDisponibilite(List<Plat> lstPlats)
-        {
-            Commande commande = new Commande(nomCommande, lstPlats);
-
-            return commande.VerifierDisponibilite();
-        }
 
     }
 }

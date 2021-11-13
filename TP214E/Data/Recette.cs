@@ -6,25 +6,27 @@ using TP214E.Interface;
 
 namespace TP214E.Data
 {
-    class Recette : Produit, IDisponible
+    public class Recette : Produit, IDisponible
     {
-        public Recette(string nom, List<(Aliment, int)> lstAlimentsQtty) : base(nom)
+        public Recette(string nom, List<Ingredient> ingredients) : base(nom)
         {
-            LstAlimentsQtty = lstAlimentsQtty;
+            Ingredients = ingredients;
         }
 
-        public List<(Aliment, int)> LstAlimentsQtty { get; set; }
+        public List<Ingredient> Ingredients { get; set; }
 
         public bool VerifierDisponibilite()
         {
-            if (LstAlimentsQtty.Count == 0)
+            if (Ingredients.Count == 0)
             {
                 return false;
             }
 
-            foreach (var alimentQuantiteTuple in LstAlimentsQtty)
+            foreach (var ingredient in Ingredients)
             {
-                if (alimentQuantiteTuple.Item1.Quantite < alimentQuantiteTuple.Item2)
+                Aliment aliment =
+                    PageAccueil.Inventaire.LstAliments.Find(aliment => aliment.Id == ingredient.Aliment.Id);
+                if (aliment.Quantite < ingredient.Quantite)
                 {
                     return false;
                 }

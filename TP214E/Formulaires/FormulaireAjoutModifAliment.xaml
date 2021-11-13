@@ -5,8 +5,8 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:TP214E.Formulaires"
         mc:Ignorable="d"
-        Title="FormulaireAjoutModifAliment" Height="450" Width="800">
-    <Grid ShowGridLines="True" Background="Black">
+        Title="Formulaire Aliment" Height="450" Width="800">
+    <Grid ShowGridLines="False" Background="Black">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="100" />
             <ColumnDefinition Width="*" />
