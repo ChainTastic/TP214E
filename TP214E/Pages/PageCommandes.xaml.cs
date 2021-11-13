@@ -32,8 +32,17 @@ namespace TP214E
         {
             if (NavigationService is {CanGoBack: true})
             {
-                NavigationService.GoBack();
+                if (_commandeEnCours.PlatsCommandes.Count > 0 && DemanderConfirmation("Si vous quitter cette page, la commande en cours sera annulé."))
+                {
+                    ReinitialiserCommande();
+                    NavigationService.GoBack();
+                }
             }
+        }
+
+        private bool DemanderConfirmation(string message)
+        {
+            return MessageBox.Show(message, "Attention", MessageBoxButton.OKCancel, MessageBoxImage.Error) == MessageBoxResult.OK;
         }
 
         private void BtnAjouterPlat_OnClick(object sender, RoutedEventArgs e)
@@ -66,19 +75,11 @@ namespace TP214E
 
         private void BtnAnnulerCommande_OnClick(object sender, RoutedEventArgs e)
         {
-            foreach (PlatCommande platsCommande in _commandeEnCours.PlatsCommandes)
+            if (DemanderConfirmation("Êtes-vous certain de vouloir annuler la commande ?"))
             {
-                for (int i = 0; i < platsCommande.Quantite; i++)
-                {
-                    foreach (Ingredient ingredient in platsCommande.Plat.Recette.Ingredients)
-                    {
-                        MettreAJourQuantiteAliment(ingredient, false);
-                    }
-                }
+                ReinitialiserCommande();
+                RafraichirPlatsDispo();
             }
-
-            ReinitialiserCommande();
-            RafraichirPlatsDispo();
         }
 
         private void BtnConfirmerCommande_OnClick(object sender, RoutedEventArgs e)
@@ -220,8 +221,23 @@ namespace TP214E
 
         private void ReinitialiserCommande()
         {
+            RetournerLesPlats(_commandeEnCours);
             _commandeEnCours = new Commande();
             RafraichirCommande();
+        }
+
+        private void RetournerLesPlats(Commande commande)
+        {
+            foreach (PlatCommande platsCommande in commande.PlatsCommandes)
+            {
+                for (int i = 0; i < platsCommande.Quantite; i++)
+                {
+                    foreach (Ingredient ingredient in platsCommande.Plat.Recette.Ingredients)
+                    {
+                        MettreAJourQuantiteAliment(ingredient, false);
+                    }
+                }
+            }
         }
     }
 }
