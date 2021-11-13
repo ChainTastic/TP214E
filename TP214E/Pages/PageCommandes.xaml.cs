@@ -61,6 +61,8 @@ namespace TP214E
                 {
                     Aliment aliment =
                         PageAccueil.Inventaire.LstAliments.Find(aliment => aliment.Id == ingredient.Aliment.Id);
+                    
+
                     aliment.Quantite += ingredient.Quantite;
                     PageAccueil.Inventaire.ModifierAliment(aliment);
                     commandeEnCours.RetirerPlat(platSelectionne);
@@ -70,6 +72,7 @@ namespace TP214E
                 RafraichirPlatsDispo();
             }
         }
+
 
         private void MettreAJourInventaire(Plat plat)
         {

@@ -8,12 +8,34 @@ namespace TP214E.Data
 {
     public class Recette : Produit, IDisponible
     {
-        public Recette(string nom, List<Ingredient> ingredients) : base(nom)
+        private List<Ingredient> _ingredients;
+
+        public Recette(string nom, List<Ingredient> lstIngredients) : base(nom)
         {
-            Ingredients = ingredients;
+            if (lstIngredients.Count == 0)
+            {
+                throw new ArgumentException("Une recette doit contenir au moins un ingrédient");
+            }
+
+            Ingredients = lstIngredients;
         }
 
-        public List<Ingredient> Ingredients { get; set; }
+        public List<Ingredient> Ingredients
+        {
+            get
+            {
+                return _ingredients;
+            }
+            set
+            {
+                if (value.Count == 0)
+                {
+                    throw new ArgumentException("Une recette doit contenir au moins un ingrédient");
+                }
+
+                _ingredients = value;
+            }
+        }
 
         public bool VerifierDisponibilite()
         {
