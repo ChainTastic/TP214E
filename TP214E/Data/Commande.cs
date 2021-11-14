@@ -1,17 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
-using System.Windows.Shell;
-using System.Xml.Schema;
 using MongoDB.Bson;
-using TP214E.Interface;
 
 namespace TP214E.Data
 {
     public class Commande
     {
-        private const double TauxTPS = 5;
-        private const double TauxTVQ = 9.975;
+        private const double TauxTps = 5;
+        private const double TauxTvq = 9.975;
 
         private List<PlatCommande> _platsCommandes;
 
@@ -28,10 +24,7 @@ namespace TP214E.Data
 
         public List<PlatCommande> PlatsCommandes
         {
-            get
-            {
-                return _platsCommandes;
-            }
+            get => _platsCommandes;
             set
             {
                 if (value.Count == 0)
@@ -60,22 +53,35 @@ namespace TP214E.Data
             {
                 sousTotal += platCommande.SousTotal;
             }
+
             return sousTotal;
         }
 
-        public double CalculerTVQ()
+        public double CalculerTvq()
         {
-            return CalculerSousTotal() * (TauxTVQ / 100);
+            return CalculerSousTotal() * (TauxTvq / 100);
         }
 
-        public double CalculerTPS()
+        public double CalculerTps()
         {
-            return CalculerSousTotal() * (TauxTPS / 100);
+            return CalculerSousTotal() * (TauxTps / 100);
         }
 
         public double CalculerTotal()
         {
-            return CalculerSousTotal() + CalculerTPS() + CalculerTVQ();
+            return CalculerSousTotal() + CalculerTps() + CalculerTvq();
+        }
+
+        public bool ContientPlat(PlatCommande nouveauPlatCommande)
+        {
+            foreach (var platCommande in PlatsCommandes)
+            {
+                if (nouveauPlatCommande.Plat.Id == platCommande.Plat.Id)
+                {
+                    return true;
+                }
+            }
+            return false;
         }
     }
 }

@@ -1,9 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Runtime.CompilerServices;
-using System.Text;
-using MongoDB.Bson;
-using Moq.Language;
 using TP214E.Interface;
 
 namespace TP214E.Data
@@ -35,10 +30,7 @@ namespace TP214E.Data
 
         public double Prix
         {
-            get
-            {
-                return _prix;
-            }
+            get => _prix;
             set
             {
                 if (value < 0)
@@ -52,10 +44,7 @@ namespace TP214E.Data
 
         public string Description
         {
-            get
-            {
-                return _description;
-            }
+            get => _description;
             set
             {
                 if (value == "" || value is null)
@@ -76,6 +65,4 @@ namespace TP214E.Data
             return Recette.VerifierDisponibilite();
         }
     }
-
-    
 }

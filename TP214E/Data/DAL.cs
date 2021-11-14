@@ -3,26 +3,25 @@ using System;
 using System.Collections.Generic;
 using System.Windows;
 using MongoDB.Bson;
-using MongoDB.Bson.Serialization;
 
 namespace TP214E.Data
 {
     public class DAL : IDAL
     {
-        public MongoClient mongoDBClient;
-        private IMongoCollection<Aliment> collectionAliments;
-        private IMongoCollection<Plat> collectionPlats;
-        private IMongoCollection<Recette> collectionRecettes;
-        private IMongoCollection<Commande> collectionCommandes;
+        public MongoClient MongoDbClient;
+        private readonly IMongoCollection<Aliment> _collectionAliments;
+        private readonly IMongoCollection<Plat> _collectionPlats;
+        private readonly IMongoCollection<Recette> _collectionRecettes;
+        private readonly IMongoCollection<Commande> _collectionCommandes;
 
         public DAL()
         {
-            mongoDBClient = OuvrirConnexion();
-            IMongoDatabase db = mongoDBClient.GetDatabase("TP2DB");
-            collectionAliments = db.GetCollection<Aliment>("Aliments");
-            collectionPlats = db.GetCollection<Plat>("Plats");
-            collectionRecettes = db.GetCollection<Recette>("Recettes");
-            collectionCommandes = db.GetCollection<Commande>("Commandes");
+            MongoDbClient = OuvrirConnexion();
+            IMongoDatabase db = MongoDbClient.GetDatabase("TP2DB");
+            _collectionAliments = db.GetCollection<Aliment>("Aliments");
+            _collectionPlats = db.GetCollection<Plat>("Plats");
+            _collectionRecettes = db.GetCollection<Recette>("Recettes");
+            _collectionCommandes = db.GetCollection<Commande>("Commandes");
         }
 
         public List<Aliment> Aliments()
@@ -30,7 +29,7 @@ namespace TP214E.Data
             List<Aliment> aliments = new List<Aliment>();
             try
             {
-                aliments = collectionAliments.Aggregate().ToList();
+                aliments = _collectionAliments.Aggregate().ToList();
             }
             catch (Exception ex)
             {
@@ -45,7 +44,7 @@ namespace TP214E.Data
         {
             try
             {
-                collectionAliments.InsertOne(aliment);
+                _collectionAliments.InsertOne(aliment);
             }
             catch (Exception ex)
             {
@@ -56,16 +55,16 @@ namespace TP214E.Data
             return true;
         }
 
-        public void ModifierAliment(ObjectId AlimentId, Aliment nouvelleAliment)
+        public void ModifierAliment(ObjectId alimentId, Aliment nouvelleAliment)
         {
             try
             {
-                FilterDefinition<Aliment> filtre = Builders<Aliment>.Filter.Eq("_id", AlimentId);
+                FilterDefinition<Aliment> filtre = Builders<Aliment>.Filter.Eq("_id", alimentId);
                 UpdateDefinition<Aliment> modifications = Builders<Aliment>.Update.Set("Nom", nouvelleAliment.Nom)
                     .Set("Quantite", nouvelleAliment.Quantite)
                     .Set("Congele", nouvelleAliment.Congele)
                     .Set("DateExpiration", nouvelleAliment.DateExpiration);
-                collectionAliments.UpdateOne(filtre, modifications);
+                _collectionAliments.UpdateOne(filtre, modifications);
             }
             catch (Exception ex)
             {
@@ -78,7 +77,7 @@ namespace TP214E.Data
         {
             try
             {
-                IMongoDatabase db = mongoDBClient.GetDatabase("TP2DB");
+                IMongoDatabase db = MongoDbClient.GetDatabase("TP2DB");
                 IMongoCollection<Aliment> aliments = db.GetCollection<Aliment>("Aliments");
                 aliments.FindOneAndDelete(Builders<Aliment>.Filter.Eq("_id", aliment.Id));
             }
@@ -113,7 +112,7 @@ namespace TP214E.Data
             List<Plat> plats = new List<Plat>();
             try
             {
-                plats = collectionPlats.Aggregate().ToList();
+                plats = _collectionPlats.Aggregate().ToList();
             }
             catch (Exception ex)
             {
@@ -129,7 +128,7 @@ namespace TP214E.Data
             List<Recette> recettes = new List<Recette>();
             try
             {
-                recettes = collectionRecettes.Aggregate().ToList();
+                recettes = _collectionRecettes.Aggregate().ToList();
             }
             catch (Exception ex)
             {
@@ -145,7 +144,7 @@ namespace TP214E.Data
             List<Commande> commandes = new List<Commande>();
             try
             {
-                commandes = collectionCommandes.Aggregate().ToList();
+                commandes = _collectionCommandes.Aggregate().ToList();
             }
             catch (Exception ex)
             {
@@ -160,7 +159,7 @@ namespace TP214E.Data
         {
             try
             {
-                collectionPlats.InsertOne(nouveauPlat);
+                _collectionPlats.InsertOne(nouveauPlat);
             }
             catch (Exception exception)
             {
@@ -175,7 +174,7 @@ namespace TP214E.Data
         {
             try
             {
-                collectionRecettes.InsertOne(nouvelleRecette);
+                _collectionRecettes.InsertOne(nouvelleRecette);
             }
             catch (Exception exception)
             {
@@ -190,7 +189,7 @@ namespace TP214E.Data
         {
             try
             {
-                collectionCommandes.InsertOne(nouvelleCommande);
+                _collectionCommandes.InsertOne(nouvelleCommande);
             }
             catch (Exception exception)
             {

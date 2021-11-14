@@ -1,17 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Globalization;
+﻿using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
 using TP214E.Data;
 
 namespace TP214E
 {
-    /// <summary>
-    /// Logique d'interaction pour PageCommandes.xaml
-    /// </summary>
     public partial class PageCommandes : Page
     {
         private List<Plat> _platsDisponibles;
@@ -32,17 +25,19 @@ namespace TP214E
         {
             if (NavigationService is {CanGoBack: true})
             {
-                if (_commandeEnCours.PlatsCommandes.Count > 0 && DemanderConfirmation("Si vous quitter cette page, la commande en cours sera annulé."))
+                if (_commandeEnCours.PlatsCommandes.Count > 0 &&
+                    DemanderConfirmation("Si vous quitter cette page, la commande en cours sera annulé."))
                 {
                     ReinitialiserCommande();
-                    NavigationService.GoBack();
+                    if (NavigationService != null) NavigationService.GoBack();
                 }
             }
         }
 
         private bool DemanderConfirmation(string message)
         {
-            return MessageBox.Show(message, "Attention", MessageBoxButton.OKCancel, MessageBoxImage.Error) == MessageBoxResult.OK;
+            return MessageBox.Show(message, "Attention", MessageBoxButton.OKCancel, MessageBoxImage.Error) ==
+                   MessageBoxResult.OK;
         }
 
         private void BtnAjouterPlat_OnClick(object sender, RoutedEventArgs e)
@@ -51,11 +46,20 @@ namespace TP214E
             if (index != -1)
             {
                 Plat platSelectionne = (Plat) lstBoxPlatsDispo.Items[index];
-                PlatCommande platCommande = new PlatCommande(platSelectionne, 1);
-                MettreAJourInventaire(platCommande, true);
-                _commandeEnCours.AjouterPlat(platCommande);
-                RafraichirCommande();
-                RafraichirPlatsDispo();
+                PlatCommande nouveauPlatCommande = new PlatCommande(platSelectionne, 1);
+                if (!_commandeEnCours.ContientPlat(nouveauPlatCommande))
+                {
+                    MettreAJourInventaire(nouveauPlatCommande, true);
+                    _commandeEnCours.AjouterPlat(nouveauPlatCommande);
+                    RafraichirCommande();
+                    RafraichirPlatsDispo();
+                }
+                else
+                {
+                    MessageBox.Show(
+                        "Ce plat est déja présent dans la commande veuillez utilisez le bouton d'incrémentation de ce dernier s.v.p",
+                        "Attention", MessageBoxButton.OK);
+                }
             }
         }
 
@@ -151,8 +155,8 @@ namespace TP214E
         private void MettreAJourLesPrix()
         {
             txtSousTotalCommande.Text = $"{_commandeEnCours.CalculerSousTotal():c}";
-            txtTPSCommande.Text = $"{_commandeEnCours.CalculerTPS():c}";
-            txtTVQCommande.Text = $"{_commandeEnCours.CalculerTVQ():c}";
+            txtTPSCommande.Text = $"{_commandeEnCours.CalculerTps():c}";
+            txtTVQCommande.Text = $"{_commandeEnCours.CalculerTvq():c}";
             txtTotalCommande.Text = $"{_commandeEnCours.CalculerTotal():c}";
         }
 
@@ -165,7 +169,8 @@ namespace TP214E
             }
             else
             {
-                _platsDisponibles = PageAccueil.Inventaire.ConsulterLesPLatsDisponibles();
+                if (PageAccueil.Inventaire != null)
+                    _platsDisponibles = PageAccueil.Inventaire.ConsulterLesPLatsDisponibles();
             }
 
             lstBoxPlatsDispo.ItemsSource = _platsDisponibles;

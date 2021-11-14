@@ -2,11 +2,10 @@
 using System.Collections.Generic;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
-using TP214E.Data;
 
 namespace TP214E.Data.Tests
 {
-    [TestClass()]
+    [TestClass]
     public class DALTests
     {
         [TestMethod()]
@@ -15,7 +14,7 @@ namespace TP214E.Data.Tests
 
         }
 
-        [TestMethod()]
+        [TestMethod]
         public void Teste_Ajout_Aliment_Dal()
         {
             var DALMock = new Mock<IDAL>();

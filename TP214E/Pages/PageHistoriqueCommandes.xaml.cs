@@ -4,9 +4,6 @@ using TP214E.Data;
 
 namespace TP214E.Pages
 {
-    /// <summary>
-    /// Interaction logic for PageHistoriqueCommandes.xaml
-    /// </summary>
     public partial class PageHistoriqueCommandes : Page
     {
         private DAL dal;

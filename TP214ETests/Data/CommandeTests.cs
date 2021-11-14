@@ -121,7 +121,7 @@ namespace TP214E.Data.Tests
 
             double sousTotal = (commande.CalculerSousTotal() * (TauxTVQ / 100));
 
-            Assert.AreEqual(sousTotal, commande.CalculerTVQ());
+            Assert.AreEqual(sousTotal, commande.CalculerTvq());
         }
 
         [TestMethod()]
@@ -135,7 +135,7 @@ namespace TP214E.Data.Tests
 
             double sousTotal = (commande.CalculerSousTotal() * (TauxTPS / 100));
 
-            Assert.AreEqual(sousTotal, commande.CalculerTPS());
+            Assert.AreEqual(sousTotal, commande.CalculerTps());
         }
 
         [TestMethod()]
@@ -147,7 +147,7 @@ namespace TP214E.Data.Tests
 
             commande.PlatsCommandes = lstPlatCommandestest;
 
-            double Total = commande.CalculerSousTotal() + commande.CalculerTPS() + commande.CalculerTVQ();
+            double Total = commande.CalculerSousTotal() + commande.CalculerTps() + commande.CalculerTvq();
 
             Assert.AreEqual(Total, commande.CalculerTotal());
         }

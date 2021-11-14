@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
-using MongoDB.Bson;
 using TP214E.Interface;
 
 namespace TP214E.Data
@@ -22,10 +20,7 @@ namespace TP214E.Data
 
         public List<Ingredient> Ingredients
         {
-            get
-            {
-                return _ingredients;
-            }
+            get => _ingredients;
             set
             {
                 if (value.Count == 0)
@@ -53,6 +48,7 @@ namespace TP214E.Data
                     return false;
                 }
             }
+
             return true;
         }
     }
