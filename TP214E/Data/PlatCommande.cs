@@ -5,7 +5,7 @@ using TP214E.Interface;
 
 namespace TP214E.Data
 {
-    public class PlatCommande : IQuantite
+    public class PlatCommande : IQuantite, IPlatCommande
     {
         private int _quantite;
 
@@ -37,7 +37,7 @@ namespace TP214E.Data
 
         public bool IngredientsSontDisponibles()
         {
-            return Plat.Recette.VerifierDisponibilite();
+            return Plat.VerifierDisponibilite();
         }
     }
 }

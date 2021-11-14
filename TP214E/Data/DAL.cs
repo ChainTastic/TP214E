@@ -41,7 +41,7 @@ namespace TP214E.Data
             return aliments;
         }
 
-        public void AjouterAliment(Aliment aliment)
+        public bool AjouterAliment(Aliment aliment)
         {
             try
             {
@@ -52,6 +52,8 @@ namespace TP214E.Data
                 MessageBox.Show("Impossible de se connecter à la base de données " + ex.Message, "Erreur",
                     MessageBoxButton.OK, MessageBoxImage.Error);
             }
+
+            return true;
         }
 
         public void ModifierAliment(ObjectId AlimentId, Aliment nouvelleAliment)
@@ -72,7 +74,7 @@ namespace TP214E.Data
             }
         }
 
-        public void RetirerAliment(Aliment aliment)
+        public bool RetirerAliment(Aliment aliment)
         {
             try
             {
@@ -85,6 +87,8 @@ namespace TP214E.Data
                 MessageBox.Show("Impossible de se connecter à la base de données " + ex.Message, "Erreur",
                     MessageBoxButton.OK, MessageBoxImage.Error);
             }
+
+            return true;
         }
 
         private MongoClient OuvrirConnexion()
@@ -152,7 +156,7 @@ namespace TP214E.Data
             return commandes;
         }
 
-        public void AjouterPlat(Plat nouveauPlat)
+        public bool AjouterPlat(Plat nouveauPlat)
         {
             try
             {
@@ -163,9 +167,11 @@ namespace TP214E.Data
                 Console.WriteLine(exception);
                 throw;
             }
+
+            return true;
         }
 
-        public void AjouterRecette(Recette nouvelleRecette)
+        public bool AjouterRecette(Recette nouvelleRecette)
         {
             try
             {
@@ -176,9 +182,11 @@ namespace TP214E.Data
                 Console.WriteLine(exception);
                 throw;
             }
+
+            return true;
         }
 
-        public void AjouterCommande(Commande nouvelleCommande)
+        public bool AjouterCommande(Commande nouvelleCommande)
         {
             try
             {
@@ -189,6 +197,8 @@ namespace TP214E.Data
                 Console.WriteLine(exception);
                 throw;
             }
+
+            return true;
         }
     }
 }

@@ -6,14 +6,14 @@ namespace TP214E.Data
     public interface IDAL
     {
         List<Aliment> Aliments();
-        void AjouterAliment(Aliment aliment);
+        bool AjouterAliment(Aliment aliment);
         void ModifierAliment(ObjectId AlimentId, Aliment nouvelleAliment);
-        void RetirerAliment(Aliment aliment);
+        bool RetirerAliment(Aliment aliment);
         List<Plat> ObtenirPlats();
         List<Recette> ObtenirRecettes();
         List<Commande> ObtenirCommandes();
-        void AjouterPlat(Plat nouveauPlat);
-        void AjouterRecette(Recette nouvelleRecette);
-        void AjouterCommande(Commande nouvelleCommande);
+        bool AjouterPlat(Plat nouveauPlat);
+        bool AjouterRecette(Recette nouvelleRecette);
+        bool AjouterCommande(Commande nouvelleCommande);
     }
 }

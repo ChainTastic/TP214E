@@ -145,24 +145,15 @@ namespace TP214E
                 lstBoxCommande.Items.Add(plat);
             }
 
-            FaireCalculCommande();
             MettreAJourLesPrix();
         }
 
         private void MettreAJourLesPrix()
         {
-            txtSousTotalCommande.Text = $"{_commandeEnCours.SousTotal:c}";
-            txtTPSCommande.Text = $"{_commandeEnCours.TPS:c}";
-            txtTVQCommande.Text = $"{_commandeEnCours.TVQ:c}";
-            txtTotalCommande.Text = $"{_commandeEnCours.Total:c}";
-        }
-
-        private void FaireCalculCommande()
-        {
-            _commandeEnCours.SousTotal = _commandeEnCours.CalculerSousTotal();
-            _commandeEnCours.TPS = _commandeEnCours.CalculerTPS();
-            _commandeEnCours.TVQ = _commandeEnCours.CalculerTVQ();
-            _commandeEnCours.Total = _commandeEnCours.CalculerTotal();
+            txtSousTotalCommande.Text = $"{_commandeEnCours.CalculerSousTotal():c}";
+            txtTPSCommande.Text = $"{_commandeEnCours.CalculerTPS():c}";
+            txtTVQCommande.Text = $"{_commandeEnCours.CalculerTVQ():c}";
+            txtTotalCommande.Text = $"{_commandeEnCours.CalculerTotal():c}";
         }
 
         private void RafraichirPlatsDispo()
@@ -228,7 +219,7 @@ namespace TP214E
 
         private void RetournerLesPlats(Commande commande)
         {
-            foreach (PlatCommande platsCommande in commande.PlatsCommandes)
+            foreach (IPlatCommande platsCommande in commande.PlatsCommandes)
             {
                 for (int i = 0; i < platsCommande.Quantite; i++)
                 {

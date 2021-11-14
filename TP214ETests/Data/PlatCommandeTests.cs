@@ -36,7 +36,7 @@ namespace TP214E.Data.Tests
             try
             {
                 PlatCommande platCommandeTest = new PlatCommande(platTest, quantite_invalide);
-                    Assert.Fail();
+                Assert.Fail();
             }
             catch (ArgumentException ex)
             {
@@ -62,6 +62,8 @@ namespace TP214E.Data.Tests
                     ex.Message);
             }
         }
+
+
         
      
         private Plat Plat_Test_objet(bool valide)

@@ -13,28 +13,35 @@ namespace TP214E.Data
         private const double TauxTPS = 5;
         private const double TauxTVQ = 9.975;
 
+        private List<PlatCommande> _platsCommandes;
+
         public Commande()
         {
             Id = ObjectId.GenerateNewId();
             Date = DateTime.Now;
-            PlatsCommandes = new List<PlatCommande>();
+            _platsCommandes = new List<PlatCommande>();
         }
 
-        public double Total { get; set; }
-
-        public double TVQ { get; set; }
-
-        public double TPS { get; set; }
-
-        public double SousTotal { get; set; }
-
-        public DateTime Date { get; set; }
+        public DateTime Date { get; }
 
         public ObjectId Id { get; set; }
 
-        public string TotalFormatte => $"{Total:C}";
+        public List<PlatCommande> PlatsCommandes
+        {
+            get
+            {
+                return _platsCommandes;
+            }
+            set
+            {
+                if (value.Count == 0)
+                {
+                    throw new ArgumentException("Une commande ne peut pas avoir aucun plat.");
+                }
 
-        public List<PlatCommande> PlatsCommandes { get; set; }
+                _platsCommandes = value;
+            }
+        }
 
         public void RetirerPlat(PlatCommande platCommande)
         {
@@ -53,23 +60,22 @@ namespace TP214E.Data
             {
                 sousTotal += platCommande.SousTotal;
             }
-
             return sousTotal;
         }
 
         public double CalculerTVQ()
         {
-            return SousTotal * (TauxTVQ / 100);
+            return CalculerSousTotal() * (TauxTVQ / 100);
         }
 
         public double CalculerTPS()
         {
-            return SousTotal * (TauxTPS / 100);
+            return CalculerSousTotal() * (TauxTPS / 100);
         }
 
         public double CalculerTotal()
         {
-            return SousTotal + TPS + TVQ;
+            return CalculerSousTotal() + CalculerTPS() + CalculerTVQ();
         }
     }
 }

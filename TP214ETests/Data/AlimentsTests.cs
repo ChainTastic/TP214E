@@ -15,7 +15,6 @@ namespace TP214E.Data.Tests
         private const int quantite_valide = 3;
         private DateTime dateExpiration_valide = new DateTime(DateTime.MaxValue.Ticks);
 
-
         private const string nom_invalide = "";
         private const int quantite_invalide = -3;
         private DateTime dateExpiration_invalide = new DateTime(DateTime.MinValue.Ticks);

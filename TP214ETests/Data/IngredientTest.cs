@@ -10,7 +10,7 @@ namespace TP214E.Data.Tests
     {
         private const bool congele = true;
         private const string nom_valide = "nom";
-        private const int quantite_valide = 3;
+        private const int quantite_valide = 3; 
         private const int quantite_invalide = -3;
         private DateTime dateExpiration_valide = new DateTime(DateTime.MaxValue.Ticks);
 

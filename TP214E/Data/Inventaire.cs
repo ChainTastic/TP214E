@@ -7,7 +7,6 @@ namespace TP214E.Data
 {
     public class Inventaire 
     {
-        private const string nomCommande = "unNom";
 
         #region Constructor
         public Inventaire(List<Aliment> lstAliments, List<Recette> lstRecettes, List<Commande> commandesTraite, List<Plat> lstPlats)
