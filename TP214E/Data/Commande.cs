@@ -1,40 +1,40 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
-using System.Windows.Shell;
-using System.Xml.Schema;
 using MongoDB.Bson;
-using TP214E.Interface;
 
 namespace TP214E.Data
 {
     public class Commande
     {
-        private const double TauxTPS = 5;
-        private const double TauxTVQ = 9.975;
+        private const double TauxTps = 5;
+        private const double TauxTvq = 9.975;
+
+        private List<PlatCommande> _platsCommandes;
 
         public Commande()
         {
             Id = ObjectId.GenerateNewId();
             Date = DateTime.Now;
-            PlatsCommandes = new List<PlatCommande>();
+            _platsCommandes = new List<PlatCommande>();
         }
 
-        public double Total { get; set; }
-
-        public double TVQ { get; set; }
-
-        public double TPS { get; set; }
-
-        public double SousTotal { get; set; }
-
-        public DateTime Date { get; set; }
+        public DateTime Date { get; }
 
         public ObjectId Id { get; set; }
 
-        public string TotalFormatte => $"{Total:C}";
+        public List<PlatCommande> PlatsCommandes
+        {
+            get => _platsCommandes;
+            set
+            {
+                if (value.Count == 0)
+                {
+                    throw new ArgumentException("Une commande ne peut pas avoir aucun plat.");
+                }
 
-        public List<PlatCommande> PlatsCommandes { get; set; }
+                _platsCommandes = value;
+            }
+        }
 
         public void RetirerPlat(PlatCommande platCommande)
         {
@@ -57,19 +57,31 @@ namespace TP214E.Data
             return sousTotal;
         }
 
-        public double CalculerTVQ()
+        public double CalculerTvq()
         {
-            return SousTotal * (TauxTVQ / 100);
+            return CalculerSousTotal() * (TauxTvq / 100);
         }
 
-        public double CalculerTPS()
+        public double CalculerTps()
         {
-            return SousTotal * (TauxTPS / 100);
+            return CalculerSousTotal() * (TauxTps / 100);
         }
 
         public double CalculerTotal()
         {
-            return SousTotal + TPS + TVQ;
+            return CalculerSousTotal() + CalculerTps() + CalculerTvq();
+        }
+
+        public bool ContientPlat(PlatCommande nouveauPlatCommande)
+        {
+            foreach (var platCommande in PlatsCommandes)
+            {
+                if (nouveauPlatCommande.Plat.Id == platCommande.Plat.Id)
+                {
+                    return true;
+                }
+            }
+            return false;
         }
     }
 }

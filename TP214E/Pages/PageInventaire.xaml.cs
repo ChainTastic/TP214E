@@ -1,15 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Controls;
 using TP214E.Data;
 using TP214E.Formulaires;
 
 namespace TP214E
 {
-    /// <summary>
-    /// Logique d'interaction pour Inventaire.xaml
-    /// </summary>
     public partial class PageInventaire : Page
     {
         private DAL dal;
@@ -33,9 +28,8 @@ namespace TP214E
         private void BtnSupprimer_OnClick(object sender, RoutedEventArgs e)
         {
             Button button = (Button) sender;
-            Aliment alimentSelectionne = button.DataContext as Aliment;
 
-            if (alimentSelectionne != null)
+            if (button.DataContext is Aliment alimentSelectionne)
             {
                 dal.RetirerAliment(alimentSelectionne);
                 PageAccueil.Inventaire.SupprimerAliment(alimentSelectionne);
@@ -46,9 +40,8 @@ namespace TP214E
         private void btnModifer_Click(object sender, RoutedEventArgs e)
         {
             Button button = (Button) sender;
-            Aliment alimentSelectionne = button.DataContext as Aliment;
 
-            if (alimentSelectionne != null)
+            if (button.DataContext is Aliment alimentSelectionne)
             {
                 FormulaireAjoutModifAliment formAjoutModifAliment = new FormulaireAjoutModifAliment(alimentSelectionne);
                 if (formAjoutModifAliment.ShowDialog() == true)

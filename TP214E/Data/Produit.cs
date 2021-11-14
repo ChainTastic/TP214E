@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 using MongoDB.Bson;
 
 namespace TP214E.Data
@@ -8,6 +6,7 @@ namespace TP214E.Data
     public abstract class Produit
     {
         private string _nom;
+
         protected Produit(string nom)
         {
             Id = ObjectId.GenerateNewId();
@@ -18,10 +17,7 @@ namespace TP214E.Data
 
         public string Nom
         {
-            get
-            {
-                return _nom;
-            }
+            get => _nom;
             set
             {
                 if (value == "" || value is null)

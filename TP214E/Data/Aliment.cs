@@ -1,5 +1,4 @@
-﻿using MongoDB.Bson;
-using System;
+﻿using System;
 using TP214E.Interface;
 
 namespace TP214E.Data
@@ -19,10 +18,7 @@ namespace TP214E.Data
 
         public int Quantite
         {
-            get
-            {
-                return _quantite;
-            }
+            get => _quantite;
             set
             {
                 if (value < 0)
@@ -38,10 +34,7 @@ namespace TP214E.Data
 
         public DateTime DateExpiration
         {
-            get
-            {
-                return _dateExpiration;
-            }
+            get => _dateExpiration;
             set
             {
                 DateTime aujourdhuiDateTime = DateTime.Today;
@@ -58,6 +51,5 @@ namespace TP214E.Data
         }
 
         public string CongeleAsString => Congele ? "Congelé" : "Non-Congelé";
-
     }
 }
